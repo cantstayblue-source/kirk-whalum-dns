@@ -3,2011 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎷 Kirk Whalum | Mission Control</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --bg-card-hover: #1a1a1a;
-            --bg-input: #0f0f0f;
-            --accent: #c9a227;
-            --accent-glow: rgba(201, 162, 39, 0.3);
-            --accent-dim: rgba(201, 162, 39, 0.15);
-            --text: #f5f5f5;
-            --text-dim: #888;
-            --text-muted: #555;
-            --success: #22c55e;
-            --success-dim: rgba(34, 197, 94, 0.15);
-            --warning: #f59e0b;
-            --warning-dim: rgba(245, 158, 11, 0.15);
-            --danger: #ef4444;
-            --danger-dim: rgba(239, 68, 68, 0.15);
-            --info: #3b82f6;
-            --info-dim: rgba(59, 130, 246, 0.15);
-            --purple: #a855f7;
-            --purple-dim: rgba(168, 85, 247, 0.15);
-            --pink: #ec4899;
-            --instagram: #e1306c;
-            --facebook: #1877f2;
-            --youtube: #ff0000;
-            --tiktok: #00f2ea;
-            --border: #222;
-            --border-light: #333;
-            --border-focus: #444;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            line-height: 1.5;
-            min-height: 100vh;
-        }
-        .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
-        
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-        .logo { display: flex; align-items: center; gap: 16px; }
-        .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent), #8a6d15);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 0 25px var(--accent-glow);
-        }
-        .logo h1 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.5px; }
-        .logo span { color: var(--text-dim); font-size: 0.8rem; margin-left: 12px; }
-        
-        .header-right { display: flex; align-items: center; gap: 12px; }
-        .ai-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--success);
-        }
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        /* Navigation */
-        .nav-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 20px;
-            background: var(--bg-card);
-            padding: 6px;
-            border-radius: 12px;
-            width: fit-content;
-            flex-wrap: wrap;
-        }
-        .nav-tab {
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            background: transparent;
-            color: var(--text-dim);
-            white-space: nowrap;
-        }
-        .nav-tab:hover { color: var(--text); }
-        .nav-tab.active {
-            background: var(--accent);
-            color: #000;
-        }
-        
-        /* Main Grid */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 260px 1fr 300px;
-            gap: 20px;
-        }
-        
-        /* Panels */
-        .panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-        }
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .panel-header h2 { font-size: 0.95rem; font-weight: 600; }
-        
-        /* Stats */
-        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .stat-box {
-            background: var(--bg-dark);
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-        }
-        .stat-box .value { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
-        .stat-box .label { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; }
-        
-        /* Social Links */
-        .social-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 10px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 600;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-        .social-link:hover { transform: translateY(-1px); opacity: 0.9; }
-        .social-link.instagram { background: var(--instagram); }
-        .social-link.facebook { background: var(--facebook); }
-        .social-link.youtube { background: var(--youtube); }
-        .social-link.tiktok { background: linear-gradient(45deg, #00f2ea, #ff0050); }
-        
-        /* Quick Actions */
-        .action-list { display: flex; flex-direction: column; gap: 6px; }
-        .action-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg-card-hover);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.2s;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        .action-item:hover { background: var(--border-light); border-color: var(--border); }
-        .action-icon { font-size: 1rem; }
-        .action-text { flex: 1; }
-        .action-text h4 { font-size: 0.8rem; font-weight: 500; }
-        .action-text p { font-size: 0.65rem; color: var(--text-dim); }
-        
-        /* Content Pipeline */
-        .content-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        
-        .pipeline-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .pipeline-filters {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-dim);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover { border-color: var(--text-dim); color: var(--text); }
-        .filter-btn.active {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-        
-        /* Content Card - Full */
-        .content-card {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-        .content-card:hover { border-color: var(--accent); }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 16px;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .card-type {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .type-badge {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-        .type-badge.sax-tip { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
-        .type-badge.faith { background: var(--success-dim); color: var(--success); }
-        .type-badge.tour { background: var(--info-dim); color: var(--info); }
-        .type-badge.reboot { background: var(--warning-dim); color: var(--warning); }
-        .type-badge.collabs { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
-        .type-badge.bible { background: var(--purple-dim); color: var(--purple); }
-        
-        .card-stage {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .stage-select {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 5px 10px;
-            font-size: 0.7rem;
-            color: var(--text);
-            cursor: pointer;
-        }
-        
-        .card-title {
-            padding: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        /* Script Builder */
-        .script-builder {
-            padding: 0 16px 16px;
-        }
-        
-        .script-section {
-            margin-bottom: 14px;
-        }
-        .script-section:last-child { margin-bottom: 0; }
-        .script-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .script-options {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        
-        .script-option {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg-card);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-        .script-option:hover { border-color: var(--border-light); }
-        .script-option.selected {
-            border-color: var(--accent);
-            background: var(--accent-dim);
-        }
-        .option-letter {
-            width: 20px;
-            height: 20px;
-            background: var(--border-light);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .script-option.selected .option-letter {
-            background: var(--accent);
-            color: #000;
-        }
-        .option-text {
-            font-size: 0.8rem;
-            line-height: 1.5;
-            color: var(--text-dim);
-            flex: 1;
-        }
-        .script-option.selected .option-text { color: var(--text); }
-        .option-tag {
-            font-size: 0.6rem;
-            padding: 2px 6px;
-            background: var(--border-light);
-            border-radius: 4px;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-        
-        /* Card Meta */
-        .card-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            font-size: 0.7rem;
-        }
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .meta-label { color: var(--text-muted); font-size: 0.6rem; text-transform: uppercase; }
-        .meta-value { color: var(--text-dim); }
-        
-        /* Card Footer */
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .card-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .status-badge {
-            font-size: 0.65rem;
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-weight: 600;
-        }
-        .status-badge.ready { background: var(--success-dim); color: var(--success); }
-        .status-badge.draft { background: var(--warning-dim); color: var(--warning); }
-        .status-badge.planned { background: rgba(136, 136, 136, 0.15); color: var(--text-dim); }
-        .status-badge.recording { background: var(--info-dim); color: var(--info); }
-        .status-badge.edited { background: var(--purple-dim); color: var(--purple); }
-        .status-badge.scheduled { background: rgba(236, 72, 153, 0.15); color: var(--pink); }
-        .status-badge.posted { background: var(--success-dim); color: var(--success); }
-        
-        .card-audience {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-        }
-        
-        .card-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .card-btn {
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .card-btn.primary {
-            background: var(--accent);
-            color: #000;
-        }
-        .card-btn.primary:hover { opacity: 0.9; }
-        .card-btn.secondary {
-            background: var(--border-light);
-            color: var(--text);
-        }
-        .card-btn.secondary:hover { background: var(--border); }
-        
-        /* Right Panel */
-        .right-panel { display: flex; flex-direction: column; gap: 16px; }
-        
-        /* AI Assistant Panel */
-        .ai-panel {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03));
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            border-radius: 14px;
-            padding: 18px;
-            text-align: center;
-        }
-        .ai-avatar {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--accent), #8a6d15);
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-        }
-        .ai-panel h3 { font-size: 0.9rem; margin-bottom: 2px; }
-        .ai-panel p { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 14px; }
-        .ai-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 18px;
-            background: var(--accent);
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        
-        /* Tasks */
-        .task-list { display: flex; flex-direction: column; gap: 6px; }
-        .task-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .task-item:hover { background: var(--bg-card-hover); }
-        .task-checkbox {
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--text-muted);
-            border-radius: 4px;
-            flex-shrink: 0;
-            margin-top: 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-        }
-        .task-item.completed .task-checkbox {
-            background: var(--success);
-            border-color: var(--success);
-            color: #000;
-        }
-        .task-content h4 { font-size: 0.75rem; font-weight: 500; }
-        .task-item.completed .task-content h4 { text-decoration: line-through; opacity: 0.5; }
-        .task-content p { font-size: 0.65rem; color: var(--text-dim); }
-        
-        /* Shows */
-        .shows-list { display: flex; flex-direction: column; gap: 8px; }
-        .show-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: var(--bg-dark);
-            border-radius: 10px;
-        }
-        .show-date {
-            text-align: center;
-            padding: 8px 10px;
-            background: var(--accent);
-            color: #000;
-            border-radius: 8px;
-            min-width: 44px;
-        }
-        .show-date .day { font-size: 1rem; font-weight: 700; line-height: 1; }
-        .show-date .month { font-size: 0.55rem; text-transform: uppercase; font-weight: 600; }
-        .show-info { flex: 1; }
-        .show-info h4 { font-size: 0.8rem; font-weight: 500; }
-        .show-info p { font-size: 0.65rem; color: var(--text-dim); }
-        
-        /* Value Ladder */
-        .value-ladder {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .ladder-step {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-            border-left: 3px solid var(--border);
-        }
-        .ladder-step.high { border-left-color: var(--accent); }
-        .ladder-step.mid { border-left-color: var(--info); }
-        .ladder-step.low { border-left-color: var(--success); }
-        .ladder-step.free { border-left-color: var(--text-muted); }
-        .ladder-price {
-            font-size: 0.7rem;
-            font-weight: 700;
-            min-width: 50px;
-        }
-        .ladder-step.free .ladder-price { color: var(--text-muted); }
-        .ladder-step.low .ladder-price { color: var(--success); }
-        .ladder-step.mid .ladder-price { color: var(--info); }
-        .ladder-step.high .ladder-price { color: var(--accent); }
-        .ladder-info h4 { font-size: 0.75rem; font-weight: 500; }
-        .ladder-info p { font-size: 0.6rem; color: var(--text-dim); }
-        
-        /* Ezra Effect */
-        .ezra-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        .ezra-item:last-child { margin-bottom: 0; }
-        .ezra-info h4 { font-size: 0.8rem; }
-        .ezra-info p { font-size: 0.65rem; color: var(--text-dim); }
-        .ezra-btn {
-            padding: 5px 10px;
-            background: var(--accent);
-            border: none;
-            border-radius: 5px;
-            color: #000;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        /* Guests */
-        .guest-list { display: flex; flex-direction: column; gap: 6px; }
-        .guest-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: var(--bg-dark);
-            border-radius: 8px;
-        }
-        .guest-avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--accent), #8a6d15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 600;
-        }
-        .guest-info { flex: 1; }
-        .guest-info h4 { font-size: 0.75rem; font-weight: 500; }
-        .guest-info p { font-size: 0.6rem; color: var(--text-dim); }
-        
-        /* Calendar View */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-        }
-        .calendar-day {
-            background: var(--bg-dark);
-            border-radius: 8px;
-            padding: 10px;
-            min-height: 80px;
-        }
-        .calendar-day-header {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .calendar-day.today { border: 1px solid var(--accent); }
-        .calendar-content-item {
-            font-size: 0.6rem;
-            padding: 4px 6px;
-            border-radius: 4px;
-            margin-bottom: 4px;
-            cursor: pointer;
-        }
-        .calendar-content-item:hover { opacity: 0.8; }
-        
-        /* Production Setup Panel */
-        .production-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        .production-item {
-            background: var(--bg-dark);
-            border-radius: 10px;
-            padding: 14px;
-        }
-        .production-item h4 {
-            font-size: 0.75rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .production-item p, .production-item li {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin-bottom: 4px;
-        }
-        .production-item ul {
-            padding-left: 16px;
-            margin: 0;
-        }
-        
-        /* Campaign Cards */
-        .campaign-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-        }
-        .campaign-card {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .campaign-card:hover { border-color: var(--accent); }
-        .campaign-card h4 { font-size: 0.85rem; margin-bottom: 6px; }
-        .campaign-card p { font-size: 0.65rem; color: var(--text-dim); }
-        .campaign-progress {
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .campaign-progress-bar {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        
-        /* Funnel Visualization */
-        .funnel-stage {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            background: var(--bg-dark);
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        .funnel-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-        .funnel-icon.traffic { background: var(--info-dim); }
-        .funnel-icon.lead { background: var(--warning-dim); }
-        .funnel-icon.tripwire { background: var(--success-dim); }
-        .funnel-icon.high { background: var(--accent-dim); }
-        .funnel-icon.premium { background: var(--purple-dim); }
-        .funnel-info { flex: 1; }
-        .funnel-info h4 { font-size: 0.8rem; margin-bottom: 2px; }
-        .funnel-info p { font-size: 0.65rem; color: var(--text-dim); }
-        .funnel-arrow { color: var(--accent); font-size: 1.2rem; }
-        
-        /* Footer */
-        footer {
-            margin-top: 30px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-        }
-        
-        /* Tab Content */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            max-width: 700px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            background: var(--bg-card);
-            z-index: 10;
-        }
-        .modal-header h3 { font-size: 1rem; }
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            font-size: 1.4rem;
-            cursor: pointer;
-            padding: 4px;
-        }
-        .modal-body { padding: 20px; }
-        
-        /* Form Elements */
-        .form-group { margin-bottom: 16px; }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-        }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 0.85rem;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        
-        /* Responsive */
-        @media (max-width: 1400px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .right-panel { display: grid; grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .right-panel { grid-template-columns: 1fr; }
-            .nav-tabs { flex-wrap: wrap; }
-            .calendar-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+    <title>Kirk Whalum | Grammy-Nominated Saxophonist</title>
+    <meta name="description" content="Grammy-nominated saxophonist Kirk Whalum - Music, Ministry, and Message. Listen to Epic Cool, join the Couragement campaign, or book for your event.">
+    <meta property="og:title" content="Kirk Whalum | Where Soul Meets Spirit">
+    <meta property="og:description" content="Grammy-nominated saxophonist. 40+ years of music, ministry, and message.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">🎷</div>
-                <div>
-                    <h1>Kirk Whalum</h1>
-                    <span>Mission Control</span>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="ai-status">
-                    <span class="status-dot"></span>
-                    Valarnette Active
-                </div>
-            </div>
-        </header>
-
-        <!-- Navigation -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" data-tab="pipeline">📹 Content Pipeline</button>
-            <button class="nav-tab" data-tab="calendar">📅 Weekly Calendar</button>
-            <button class="nav-tab" data-tab="production">🎬 Production</button>
-            <button class="nav-tab" data-tab="campaigns">🚀 Campaigns</button>
-            <button class="nav-tab" data-tab="funnel">🎯 Value Ladder</button>
-            <button class="nav-tab" data-tab="shows">🎤 Shows</button>
-            <button class="nav-tab" data-tab="crm">👥 CRM</button>
-            <button class="nav-tab" data-tab="tasks">⚡ Tasks</button>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <a href="website.html" class="nav-logo">Kirk Whalum</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="music.html">Music</a>
+            <a href="events.html">Events</a>
+            <a href="ministry.html">Ministry</a>
+            <a href="contact.html">Contact</a>
         </div>
+        <a href="contact.html" class="btn nav-cta">Book Kirk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
 
-        <!-- Content Pipeline Tab -->
-        <div class="tab-content active" id="pipeline">
-            <div class="main-grid">
-                <!-- Left Sidebar -->
-                <div class="sidebar">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h2>📊 Overview</h2>
-                        </div>
-                        <div class="stat-grid">
-                            <div class="stat-box">
-                                <div class="value">338K</div>
-                                <div class="label">Followers</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" id="show-count">4</div>
-                                <div class="label">Shows</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" id="guest-count">0</div>
-                                <div class="label">Guests</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" id="content-count">0</div>
-                                <div class="label">In Pipeline</div>
-                            </div>
-                        </div>
-                        
-                        <h3 style="font-size: 0.75rem; color: var(--text-dim); margin: 16px 0 8px;">🔗 Connect</h3>
-                        <div class="social-grid">
-                            <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link instagram">📸 IG</a>
-                            <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link facebook">📘 FB</a>
-                            <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link youtube">▶️ YT</a>
-                            <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link tiktok">🎵 TT</a>
-                        </div>
-                    </div>
-                    
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h2>⚡ Quick Actions</h2>
-                        </div>
-                        <div class="action-list">
-                            <button class="action-item" onclick="openModal('add-content')">
-                                <span class="action-icon">➕</span>
-                                <div class="action-text">
-                                    <h4>Add Content</h4>
-                                    <p>Create new video</p>
-                                </div>
-                            </button>
-                            <button class="action-item" onclick="openModal('add-campaign')">
-                                <span class="action-icon">🚀</span>
-                                <div class="action-text">
-                                    <h4>New Campaign</h4>
-                                    <p>Start a launch</p>
-                                </div>
-                            </button>
-                            <a href="https://airtable.com/appBR3ClZVRxdCnX1" target="_blank" class="action-item">
-                                <span class="action-icon">🗄️</span>
-                                <div class="action-text">
-                                    <h4>Open CRM</h4>
-                                    <p>Airtable Database</p>
-                                </div>
-                            </a>
-                            <button class="action-item" onclick="openAIModal()">
-                                <span class="action-icon">✨</span>
-                                <div class="action-text">
-                                    <h4>AI Assist</h4>
-                                    <p>Get content help</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h2>🎯 Quick Stats</h2>
-                        </div>
-                        <div class="stat-grid">
-                            <div class="stat-box">
-                                <div class="value" style="color: var(--success);" id="ready-count">0</div>
-                                <div class="label">Ready</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" style="color: var(--warning);" id="draft-count">0</div>
-                                <div class="label">Draft</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" style="color: var(--info);" id="recording-count">0</div>
-                                <div class="label">Recording</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="value" style="color: var(--purple);" id="posted-count">0</div>
-                                <div class="label">Posted</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Center - Content Pipeline -->
-                <div class="center-panel">
-                    <div class="panel" style="padding: 20px;">
-                        <div class="pipeline-controls">
-                            <div class="pipeline-filters">
-                                <button class="filter-btn active" data-filter="all">All</button>
-                                <button class="filter-btn" data-filter="sax-tip">Sax Tips</button>
-                                <button class="filter-btn" data-filter="faith">Faith</button>
-                                <button class="filter-btn" data-filter="tour">Tour</button>
-                                <button class="filter-btn" data-filter="reboot">Reboot</button>
-                                <button class="filter-btn" data-filter="collabs">Collabs</button>
-                                <button class="filter-btn" data-filter="bible">BIYE</button>
-                            </div>
-                            <button class="card-btn primary" onclick="openModal('add-content')">➕ Add Content</button>
-                        </div>
-                        
-                        <div class="content-pipeline" id="content-pipeline">
-                            <!-- Content cards rendered here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Panel -->
-                <div class="right-panel">
-                    <div class="ai-panel">
-                        <div class="ai-avatar">✨</div>
-                        <h3>Meet Valarnette</h3>
-                        <p>Your AI Assistant</p>
-                        <button class="ai-btn" onclick="openAIModal()">
-                            💬 Get Help
-                        </button>
-                    </div>
-                    
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h2>🎯 Value Ladder</h2>
-                        </div>
-                        <div class="value-ladder">
-                            <div class="ladder-step free">
-                                <span class="ladder-price">$0</span>
-                                <div class="ladder-info">
-                                    <h4>BIYE Podcast + Content</h4>
-                                    <p>Free daily value</p>
-                                </div>
-                            </div>
-                            <div class="ladder-step low">
-                                <span class="ladder-price">$47</span>
-                                <div class="ladder-info">
-                                    <h4>Sax Starter Course</h4>
-                                    <p>Tripwire offer</p>
-                                </div>
-                            </div>
-                            <div class="ladder-step mid">
-                                <span class="ladder-price">$497</span>
-                                <div class="ladder-info">
-                                    <h4>Sax Masterclass</h4>
-                                    <p>4-week program</p>
-                                </div>
-                            </div>
-                            <div class="ladder-step high">
-                                <span class="ladder-price">$2.5K</span>
-                                <div class="ladder-info">
-                                    <h4>1-on-1 Coaching</h4>
-                                    <p>Personal mentorship</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h2>✨ Ezra Effect</h2>
-                        </div>
-                        <p style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 12px;">3-day post-show follow-ups</p>
-                        <div id="ezra-list">
-                            <div class="ezra-item">
-                                <div class="ezra-info">
-                                    <h4>Blue Note NYC</h4>
-                                    <p>Follow-up available</p>
-                                </div>
-                                <button class="ezra-btn">Generate</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Calendar Tab -->
-        <div class="tab-content" id="calendar">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>📅 Weekly Content Calendar</h2>
-                    <button class="card-btn primary" onclick="openModal('schedule-content')">📅 Schedule Content</button>
-                </div>
-                <div class="calendar-grid" id="calendar-grid">
-                    <!-- Calendar rendered here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Production Tab -->
-        <div class="tab-content" id="production">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>🎬 Production Setup</h2>
-                </div>
-                <div class="production-grid">
-                    <div class="production-item">
-                        <h4>📱 TikTok / Reels</h4>
-                        <ul>
-                            <li>Aspect: 9:16 (1080x1920)</li>
-                            <li>Length: 15-60 sec max</li>
-                            <li>Lighting: Face lit, background clean</li>
-                            <li>Audio: External mic recommended</li>
-                        </ul>
-                    </div>
-                    <div class="production-item">
-                        <h4>▶️ YouTube</h4>
-                        <ul>
-                            <li>Aspect: 16:9 (1920x1080)</li>
-                            <li>Length: 3-10 min optimal</li>
-                            <li>Lighting: Two-point setup</li>
-                            <li>Audio: Lavalier or boom</li>
-                        </ul>
-                    </div>
-                    <div class="production-item">
-                        <h4>📘 Facebook</h4>
-                        <ul>
-                            <li>Aspect: 1:1 or 16:9</li>
-                            <li>Length: 1-3 min</li>
-                            <li>Loop: Make it engaging throughout</li>
-                            <li>Captions: Required for reach</li>
-                        </ul>
-                    </div>
-                    <div class="production-item">
-                        <h4>🎤 Performance</h4>
-                        <ul>
-                            <li>Aspect: 16:9 or 9:16</li>
-                            <li>Audio: Stage mic or direct</li>
-                            <li>Stabilizer: Use gimbal</li>
-                            <li>B-roll: Capture crowd, backstage</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <h3 style="font-size: 0.9rem; margin: 20px 0 12px;">📋 Recording Checklist</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Phone charged
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Lighting checked
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Audio test done
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Background clean
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Script printed/ready
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                        <input type="checkbox" style="width: 18px; height: 18px;"> Hashtags ready
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Campaigns Tab -->
-        <div class="tab-content" id="campaigns">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>🚀 Active Campaigns</h2>
-                    <button class="card-btn primary" onclick="openModal('add-campaign')">➕ New Campaign</button>
-                </div>
-                <div class="campaign-grid" id="campaign-grid">
-                    <!-- Campaigns rendered here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Funnel Tab -->
-        <div class="tab-content" id="funnel">
-            <div class="main-grid">
-                <div class="panel" style="grid-column: span 3;">
-                    <div class="panel-header">
-                        <h2>🎯 Marketing Funnel</h2>
-                    </div>
-                    
-                    <div class="funnel-stage">
-                        <div class="funnel-icon traffic">📱</div>
-                        <div class="funnel-info">
-                            <h4>Traffic Sources</h4>
-                            <p>TikTok, Instagram, Facebook, YouTube, Email</p>
-                        </div>
-                        <span class="funnel-arrow">→</span>
-                    </div>
-                    
-                    <div class="funnel-stage">
-                        <div class="funnel-icon lead">📧</div>
-                        <div class="funnel-info">
-                            <h4>Lead Magnets</h4>
-                            <p>"5 Sax Exercises" PDF, 30-Day Couragement Series, BIYE Podcast</p>
-                        </div>
-                        <span class="funnel-arrow">→</span>
-                    </div>
-                    
-                    <div class="funnel-stage">
-                        <div class="funnel-icon tripwire">🎯</div>
-                        <div class="funnel-info">
-                            <h4>Tripwire ($47)</h4>
-                            <p>Sax Starter Course - Quick win, low barrier</p>
-                        </div>
-                        <span class="funnel-arrow">→</span>
-                    </div>
-                    
-                    <div class="funnel-stage">
-                        <div class="funnel-icon high">⭐</div>
-                        <div class="funnel-info">
-                            <h4>High Ticket ($497)</h4>
-                            <p>Sax Masterclass - 4-week program</p>
-                        </div>
-                        <span class="funnel-arrow">→</span>
-                    </div>
-                    
-                    <div class="funnel-stage">
-                        <div class="funnel-icon premium">💎</div>
-                        <div class="funnel-info">
-                            <h4>Premium ($2,500+)</h4>
-                            <p>1-on-1 Coaching, Mastermind, Cafe Kirk Collab</p>
-                        </div>
-                    </div>
-                    
-                    <h3 style="font-size: 0.9rem; margin: 24px 0 12px;">🔗 Content → Funnel Mapping</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
-                        <div style="background: var(--bg-dark); padding: 14px; border-radius: 10px;">
-                            <h4 style="font-size: 0.8rem; margin-bottom: 6px;">Sax Tips</h4>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ Sax Starter Course ($47)</p>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ Masterclass ($497)</p>
-                        </div>
-                        <div style="background: var(--bg-dark); padding: 14px; border-radius: 10px;">
-                            <h4 style="font-size: 0.8rem; margin-bottom: 6px;">Faith Content</h4>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ BIYE Podcast (free)</p>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ 30-Day Couragement</p>
-                        </div>
-                        <div style="background: var(--bg-dark); padding: 14px; border-radius: 10px;">
-                            <h4 style="font-size: 0.8rem; margin-bottom: 6px;">Reboot Story</h4>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ Reboot Book ($)</p>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ 1-on-1 Coaching</p>
-                        </div>
-                        <div style="background: var(--bg-dark); padding: 14px; border-radius: 10px;">
-                            <h4 style="font-size: 0.8rem; margin-bottom: 6px;">Tour Content</h4>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);">→ Ticket sales</p>
-                            <p style="font-size: 0.7rem; color: var(--text-dim);→ Cafe Kirk experience</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Shows Tab -->
-        <div class="tab-content" id="shows">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>🎤 Upcoming Shows</h2>
-                    <button class="card-btn primary" onclick="refreshShows()">🔄 Refresh</button>
-                </div>
-                <div class="shows-list" id="shows-list">
-                    <!-- Shows loaded from Airtable -->
-                </div>
-            </div>
-        </div>
-
-        <!-- CRM Tab -->
-        <div class="tab-content" id="crm">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>👥 Cafe Kirk Guests</h2>
-                    <button class="card-btn primary" onclick="refreshGuests()">🔄 Refresh</button>
-                </div>
-                <div class="guest-list" id="guest-list">
-                    <!-- Guests loaded from Airtable -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Tasks Tab -->
-        <div class="tab-content" id="tasks">
-            <div class="panel">
-                <div class="panel-header">
-                    <h2>⚡ Action Items</h2>
-                    <button class="card-btn primary" onclick="openModal('add-task')">➕ Add Task</button>
-                </div>
-                <div class="task-list" id="task-list">
-                    <!-- Tasks rendered here -->
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            🎷 Kirk Whalum Digital Nervous System • Powered by OpenClaw • Last updated: March 1, 2026
-        </footer>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="music.html">Music</a>
+        <a href="events.html">Events</a>
+        <a href="ministry.html">Ministry</a>
+        <a href="contact.html">Contact</a>
     </div>
 
-    <!-- Add Content Modal -->
-    <div class="modal-overlay" id="modal-add-content">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>➕ Add New Content</h3>
-                <button class="modal-close" onclick="closeModal('add-content')">×</button>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span>&#127927;</span> Grammy-Nominated Saxophonist
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Content Title</label>
-                    <input type="text" id="new-content-title" placeholder="e.g., 'Sax tip: The one note secret'">
-                </div>
-                <div class="form-group">
-                    <label>Content Type</label>
-                    <select id="new-content-type">
-                        <option value="sax-tip">Sax Tip</option>
-                        <option value="faith">Faith</option>
-                        <option value="tour">Tour/Behind Scenes</option>
-                        <option value="reboot">Reboot (Personal Story)</option>
-                        <option value="collabs">Collaboration</option>
-                        <option value="bible">BIYE/Bible</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Primary Platform</label>
-                    <select id="new-content-platform">
-                        <option value="tiktok">TikTok</option>
-                        <option value="reels">Instagram Reels</option>
-                        <option value="youtube">YouTube</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="all">All Platforms</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Target Audience</label>
-                    <input type="text" id="new-content-audience" placeholder="e.g., Young musicians, Faith-based">
-                </div>
-                <div class="form-group">
-                    <label>Funnel Stage</label>
-                    <select id="new-content-funnel">
-                        <option value="awareness">Awareness (Free)</option>
-                        <option value="consideration">Consideration (Lead Magnet)</option>
-                        <option value="decision">Decision (Offer)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Campaign (Optional)</label>
-                    <select id="new-content-campaign">
-                        <option value="">None</option>
-                    </select>
-                </div>
-                <button class="card-btn primary" style="width: 100%;" onclick="addNewContent()">Create Content</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Campaign Modal -->
-    <div class="modal-overlay" id="modal-add-campaign">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>🚀 New Campaign</h3>
-                <button class="modal-close" onclick="closeModal('add-campaign')">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Campaign Name</label>
-                    <input type="text" id="new-campaign-name" placeholder="e.g., Reboot Book Launch">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="new-campaign-desc" rows="3" placeholder="What is this campaign about?"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Start Date</label>
-                    <input type="date" id="new-campaign-start">
-                </div>
-                <div class="form-group">
-                    <label>End Date</label>
-                    <input type="date" id="new-campaign-end">
-                </div>
-                <div class="form-group">
-                    <label>Goal</label>
-                    <input type="text" id="new-campaign-goal" placeholder="e.g., 1000 book pre-orders">
-                </div>
-                <button class="card-btn primary" style="width: 100%;" onclick="addNewCampaign()">Create Campaign</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Task Modal -->
-    <div class="modal-overlay" id="modal-add-task">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>➕ Add Task</h3>
-                <button class="modal-close" onclick="closeModal('add-task')">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Task Title</label>
-                    <input type="text" id="new-task-title" placeholder="e.g., Record 5 sax tip videos">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="new-task-desc" rows="2" placeholder="Additional details..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Priority</label>
-                    <select id="new-task-priority">
-                        <option value="urgent">🔴 Urgent</option>
-                        <option value="high">🟠 High</option>
-                        <option value="medium">🟡 Medium</option>
-                        <option value="low">⚪ Low</option>
-                    </select>
-                </div>
-                <button class="card-btn primary" style="width: 100%;" onclick="addNewTask()">Add Task</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI Modal -->
-    <div class="modal-overlay" id="ai-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>✨ AI Content Assistant</h3>
-                <button class="modal-close" onclick="closeAIModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 16px;">
-                    I'm your AI assistant. I can help you with:
-                </p>
-                <ul style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 20px; padding-left: 20px; line-height: 2;">
-                    <li>Generate new content ideas based on our frameworks</li>
-                    <li>Help script videos using the split-test system</li>
-                    <li>Plan weekly content calendar</li>
-                    <li>Brainstorm collaboration ideas</li>
-                    <li>Write CTAs and hooks optimized for conversion</li>
-                    <li>Create hashtag sets for each platform</li>
-                    <li>Suggest A/B tests based on performance</li>
-                </ul>
-                <a href="https://t.me/KirkWhalumBot" target="_blank" class="card-btn primary" style="display: block; text-align: center; padding: 14px; font-size: 0.9rem;">
-                    💬 Message Me on Telegram
+            <h1>Where Soul Meets Spirit</h1>
+            <p class="hero-subtitle">Memphis-born. Ministry-minded. Still blowing minds after 40 years.</p>
+            <p class="hero-description">From playing with Whitney Houston to leading worship, Kirk Whalum brings the same passion to every note — music that moves your body and transforms your soul.</p>
+            <div class="hero-buttons">
+                <a href="music.html" class="btn btn-primary">
+                    &#127925; Listen to Epic Cool
+                </a>
+                <a href="#email" class="btn btn-secondary">
+                    &#9993;&#65039; Join the Movement
                 </a>
             </div>
         </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item fade-in">
+            <div class="stat-number">40+</div>
+            <div class="stat-label">Years of Music</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Studio Albums</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">338K</div>
+            <div class="stat-label">Social Followers</div>
+        </div>
+        <div class="stat-item fade-in">
+            <div class="stat-number">1M+</div>
+            <div class="stat-label">Monthly Streams</div>
+        </div>
     </div>
 
-    <script>
-        // ==================== DATA ====================
-        let contentDatabase = [
-            {
-                id: 1,
-                type: 'sax-tip',
-                typeLabel: 'Sax Tip',
-                title: '"Most sax players make this mistake..."',
-                status: 'ready',
-                stage: 'scripted',
-                platform: 'TikTok, Reels',
-                audience: 'Young musicians',
-                funnel: 'consideration',
-                campaign: null,
-                scheduledDate: '2026-03-02',
-                hashtags: '#saxophone #sax #jazz #musictips #learn',
-                hooks: [
-                    { letter: 'A', text: '"Most sax players make this mistake..." - Best for clickbait, older audience', bestFor: 'Clickbait' },
-                    { letter: 'B', text: '"One note. That\'s all you need." - Best for TikTok, short attention', bestFor: 'TikTok' },
-                    { letter: 'C', text: '"My grandfather taught me this in Memphis..." - Best for story-driven, faith audience', bestFor: 'Story' },
-                    { letter: 'D', text: '"POV: You\'re at my soundcheck 🎷" - Best for behind-scenes, younger', bestFor: 'POV' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"That note you\'re chasing? Stop. Find the one note that hits different. Play it with everything you got. That\'s the secret." (20 sec)', length: '20 sec' },
-                    { letter: 'B', text: '"My mentor told me: \'Don\'t play so many notes. Play the RIGHT note.\' Took me 30 years to understand. Now I break it down for you." (25 sec)', length: '25 sec' },
-                    { letter: 'C', text: '"Tone isn\'t in your horn. It\'s in your breath. It\'s in your soul. Let me show you how I approach every solo." (22 sec)', length: '22 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Follow for more sax tips 🎷" - Best for growth', bestFor: 'Growth' },
-                    { letter: 'B', text: '"Drop a 🎷 if this helped" - Best for engagement', bestFor: 'Engagement' },
-                    { letter: 'C', text: '"Link in bio for my masterclass" - Best for monetization', bestFor: 'Sales' }
-                ]
-            },
-            {
-                id: 2,
-                type: 'faith',
-                typeLabel: 'Faith',
-                title: '"What I learned reading the Bible every day for 10 years"',
-                status: 'ready',
-                stage: 'scripted',
-                platform: 'Instagram, Facebook',
-                audience: 'Faith-based',
-                funnel: 'awareness',
-                campaign: null,
-                scheduledDate: '2026-03-03',
-                hashtags: '#faith #bible #christian #spiritual #BIYE',
-                hooks: [
-                    { letter: 'A', text: '"This changed everything for me..." - Best for mystery, intrigue', bestFor: 'Mystery' },
-                    { letter: 'B', text: '"What I learned reading the Bible every day for 10 years" - Best for BIYE audience', bestFor: 'BIYE' },
-                    { letter: 'C', text: '"Prayer in the green room 🎷🙏" - Best for behind-scenes', bestFor: 'BTS' },
-                    { letter: 'D', text: '"Ministry meets music" - Best for brand', bestFor: 'Brand' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"Every morning, 6am. Bible in my ear. That\'s the name of the podcast — Bible In Your Ear. Join me. 15 minutes. Every day. Transformation starts here." (25 sec)', length: '25 sec' },
-                    { letter: 'B', text: '"I used to think ministry and music were separate. Then I realized — they\'ve always been the same thing. Every note I play is a prayer. Every solo is a sermon." (28 sec)', length: '28 sec' },
-                    { letter: 'C', text: '"The verse that keeps me grounded: \'Make a joyful noise unto the Lord.\' Not a perfect noise. Just joyful. That\'s what I bring to the stage every night." (22 sec)', length: '22 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Subscribe to BIYE — link in bio" - Best for podcast growth', bestFor: 'Podcast' },
-                    { letter: 'B', text: '"Share this with someone who needs hope" - Best for faith audience', bestFor: 'Share' },
-                    { letter: 'C', text: '"Follow for daily inspiration" - Best for general', bestFor: 'Growth' }
-                ]
-            },
-            {
-                id: 3,
-                type: 'tour',
-                typeLabel: 'Tour',
-                title: 'POV: You\'re on tour with Kirk Whalum',
-                status: 'ready',
-                stage: 'scripted',
-                platform: 'TikTok, Reels',
-                audience: 'All ages',
-                funnel: 'awareness',
-                campaign: null,
-                scheduledDate: '2026-03-04',
-                hashtags: '#tour #livemusic #backstage #saxophone #kirkwhalum',
-                hooks: [
-                    { letter: 'A', text: '"POV: You\'re on tour with Kirk Whalum 🎷" - Best for TikTok, younger', bestFor: 'TikTok' },
-                    { letter: 'B', text: '"From Memphis to the world..." - Best for brand, older', bestFor: 'Brand' },
-                    { letter: 'C', text: '"Soundcheck at [VENUE] 🎤" - Best for real-time engagement', bestFor: 'Live' },
-                    { letter: 'D', text: '"What happens before the lights go down" - Best for mystery', bestFor: 'Mystery' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"30 minutes before showtime. Warming up. Praying. Getting centered. This is the ritual. Every city. Every night." (20 sec)', length: '20 sec' },
-                    { letter: 'B', text: '"Memphis raised me. Olivet Baptist Church. My dad\'s congregation. Every note I play — I hear that choir. This is who I am." (25 sec)', length: '25 sec' },
-                    { letter: 'C', text: '"Backstage with my team. The band. The crew. We\'re family. Tour life isn\'t glamorous — it\'s brotherhood." (22 sec)', length: '22 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Come see us live — link in bio for tickets" - Best for ticket sales', bestFor: 'Tickets' },
-                    { letter: 'B', text: '"Tag someone who\'d love this tour life" - Best for engagement', bestFor: 'Engagement' },
-                    { letter: 'C', text: '"Follow for exclusive tour content" - Best for growth', bestFor: 'Growth' }
-                ]
-            },
-            {
-                id: 4,
-                type: 'reboot',
-                typeLabel: 'Reboot',
-                title: '"I almost quit music..."',
-                status: 'draft',
-                stage: 'idea',
-                platform: 'Facebook, YouTube',
-                audience: 'Core fans',
-                funnel: 'decision',
-                campaign: 'reboot-launch',
-                scheduledDate: null,
-                hashtags: '#reboot #musician #career #story #transformation',
-                hooks: [
-                    { letter: 'A', text: '"I almost quit music..." - Best for emotional, drama', bestFor: 'Drama' },
-                    { letter: 'B', text: '"The moment everything changed" - Best for storytelling', bestFor: 'Story' },
-                    { letter: 'C', text: '"Reboot: The story behind the book" - Best for book promo', bestFor: 'Book' },
-                    { letter: 'D', text: '"What 40 years in music taught me" - Best for wisdom', bestFor: 'Wisdom' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"2016. Hit a wall. Lost my way. The music felt empty. So I did what I had to do — I went back to the source. Faith. Family. Memphis. This is my reboot." (30 sec)', length: '30 sec' },
-                    { letter: 'B', text: '"People ask: \'Kirk, what\'s your secret?\' I say: \'Restart.\' Every few years, you gotta kill the noise and find the signal again. That\'s what \'Reboot\' is about." (25 sec)', length: '25 sec' },
-                    { letter: 'C', text: '"My dad was a preacher. My uncles played sax. I had every excuse to be a session player in LA. But I chose the road. Chose the live shows. Chose you. That\'s my reboot every night." (28 sec)', length: '28 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Pre-order \'Reboot\' — link in bio" - Best for book sales', bestFor: 'Book' },
-                    { letter: 'B', text: '"Share your reboot story in comments" - Best for engagement', bestFor: 'Engagement' },
-                    { letter: 'C', text: '"Follow for the full story" - Best for growth', bestFor: 'Growth' }
-                ]
-            },
-            {
-                id: 5,
-                type: 'collabs',
-                typeLabel: 'Collab',
-                title: '"What if saxophone met Afrobeats? 🎷🔥"',
-                status: 'draft',
-                stage: 'idea',
-                platform: 'TikTok, Reels',
-                audience: 'Young global',
-                funnel: 'awareness',
-                campaign: null,
-                scheduledDate: null,
-                hashtags: '#afrobeats #jazz #saxophone #collab #newmusic',
-                hooks: [
-                    { letter: 'A', text: '"What if saxophone met Afrobeats? 🎷🔥" - Best for crossover, intrigue', bestFor: 'Crossover' },
-                    { letter: 'B', text: '"Live sax in 2026 sounds like THIS" - Best for modern, youth', bestFor: 'Modern' },
-                    { letter: 'C', text: '"The next generation of jazz is HERE" - Best for brand, forward-looking', bestFor: 'Brand' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"I\'ve played with the greats. Luther. Quincy. Whitney. But right now? I\'m listening to Wizkid. Burna Boy. The future is hybrid. Saxophone + Afrobeats = something new." (25 sec)', length: '25 sec' },
-                    { letter: 'B', text: '"Young artists: You don\'t have to choose between legacy and future. Add live saxophone to your sound. Let\'s create something that bridges generations." (22 sec)', length: '22 sec' },
-                    { letter: 'C', text: '"The Gospel According to Jazz meets the world. Africa tour coming. Live sax. Live breath. Live soul. This is the bridge." (20 sec)', length: '20 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Tag an artist who needs this collab" - Best for virality', bestFor: 'Virality' },
-                    { letter: 'B', text: '"DM me if you\'re ready to create" - Best for direct outreach', bestFor: 'Outreach' },
-                    { letter: 'C', text: '"Follow for the collab announcement" - Best for growth', bestFor: 'Growth' }
-                ]
-            },
-            {
-                id: 6,
-                type: 'bible',
-                typeLabel: 'BIYE',
-                title: 'Prayer in the green room',
-                status: 'planned',
-                stage: 'idea',
-                platform: 'Instagram, Facebook',
-                audience: 'Faith-based',
-                funnel: 'awareness',
-                campaign: null,
-                scheduledDate: '2026-03-06',
-                hashtags: '#BIYE #bible #faith #prayer #spiritual',
-                hooks: [
-                    { letter: 'A', text: '"This is how I prepare for every show..." - Best for routine', bestFor: 'Routine' },
-                    { letter: 'B', text: '"The green room looks different for me 🎷🙏" - Best for BTS', bestFor: 'BTS' },
-                    { letter: 'C', text: '"Before the music, the prayer" - Best for ministry', bestFor: 'Ministry' }
-                ],
-                bodies: [
-                    { letter: 'A', text: '"Every night, before I walk on stage, I do the same thing. I pray. Not for the music — for the people. That they feel something. That they leave better than they came." (20 sec)', length: '20 sec' },
-                    { letter: 'B', text: '"People think it\'s glamorous backstage. For me? It\'s sacred space. 5 minutes of silence. 5 minutes of prayer. Then I play." (18 sec)', length: '18 sec' },
-                    { letter: 'C', text: '"My dad was a preacher. My mom played piano at church. This is in my DNA. Every show is a sermon. Every solo is a prayer." (22 sec)', length: '22 sec' }
-                ],
-                ctas: [
-                    { letter: 'A', text: '"Share this with someone who needs peace today" - Best for faith', bestFor: 'Faith' },
-                    { letter: 'B', text: '"Follow for daily spiritual vibes" - Best for growth', bestFor: 'Growth' },
-                    { letter: 'C', text: '"Link in bio for BIYE podcast" - Best for podcast', bestFor: 'Podcast' }
-                ]
-            }
-        ];
+    <!-- Email Capture -->
+    <section class="email-section" id="email">
+        <div class="section-label">Join the Family</div>
+        <h2>The Couragement Campaign</h2>
+        <p>Get daily inspiration, exclusive sax tips, and behind-the-scenes content delivered to your inbox. No spam — just soul.</p>
+        <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Welcome!'; setTimeout(() => this.querySelector('button').textContent='Join Free', 3000);">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Join Free</button>
+        </form>
+        <p class="email-note">&#127927; Join 2,000+ sax lovers and faith seekers</p>
+    </section>
 
-        let campaigns = [
-            { id: 'reboot-launch', name: 'Reboot Book Launch', desc: 'Promoting the Reboot book with personal story content', startDate: '2026-03-15', endDate: '2026-04-15', goal: '1000 pre-orders', contentCount: 1, totalContent: 5 },
-            { id: 'epic-cool', name: 'Epic Cool Promo', desc: 'New album release campaign', startDate: '2026-04-01', endDate: '2026-05-01', goal: 'Stream goal', contentCount: 0, totalContent: 8 }
-        ];
-
-        let tasks = [
-            { id: 1, title: 'Record Week 1 content', desc: '3-5 videos from content pipeline', priority: 'urgent', done: false },
-            { id: 2, title: 'Add guest contacts to CRM', desc: 'PJ Morton, Michael McDonald, local artists', priority: 'high', done: false },
-            { id: 3, title: 'Connect Google Calendar', desc: 'Enable Ezra Effect automation', priority: 'medium', done: false },
-            { id: 4, title: 'Set up email marketing', desc: 'ConvertKit/MailerLite for funnels', priority: 'medium', done: false },
-            { id: 5, title: 'Upload Reboot manuscript', desc: 'Content extraction for 30-day campaign', priority: 'low', done: false }
-        ];
-
-        // ==================== RENDER FUNCTIONS ====================
-        function renderContentPipeline(filter = 'all') {
-            const pipeline = document.getElementById('content-pipeline');
-            const filtered = filter === 'all' ? contentDatabase : contentDatabase.filter(c => c.type === filter);
-            
-            document.getElementById('content-count').textContent = contentDatabase.length;
-            
-            // Update stats
-            const stages = ['idea', 'scripted', 'filmed', 'edited', 'scheduled', 'posted'];
-            document.getElementById('ready-count').textContent = contentDatabase.filter(c => c.status === 'ready').length;
-            document.getElementById('draft-count').textContent = contentDatabase.filter(c => c.status === 'draft').length;
-            document.getElementById('recording-count').textContent = contentDatabase.filter(c => c.status === 'recording').length;
-            document.getElementById('posted-count').textContent = contentDatabase.filter(c => c.status === 'posted').length;
-            
-            pipeline.innerHTML = filtered.map(content => `
-                <div class="content-card" data-type="${content.type}">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <span class="type-badge ${content.type}">${content.typeLabel}</span>
-                            <span style="font-size: 0.7rem; color: var(--text-dim);">📱 ${content.platform}</span>
-                        </div>
-                        <div class="card-stage">
-                            <select class="stage-select" onchange="updateStage(${content.id}, this.value)">
-                                <option value="idea" ${content.stage === 'idea' ? 'selected' : ''}>💡 Idea</option>
-                                <option value="scripted" ${content.stage === 'scripted' ? 'selected' : ''}>📝 Scripted</option>
-                                <option value="filmed" ${content.stage === 'filmed' ? 'selected' : ''}>🎬 Filmed</option>
-                                <option value="edited" ${content.stage === 'edited' ? 'selected' : ''}>✂️ Edited</option>
-                                <option value="scheduled" ${content.stage === 'scheduled' ? 'selected' : ''}>📅 Scheduled</option>
-                                <option value="posted" ${content.stage === 'posted' ? 'selected' : ''}>✅ Posted</option>
-                            </select>
-                        </div>
-                    </div>
-                    <h4 class="card-title">${content.title}</h4>
-                    
-                    <div class="script-builder">
-                        <div class="script-section">
-                            <div class="script-label">🎣 HOOK (Select one)</div>
-                            <div class="script-options">
-                                ${content.hooks.map(h => `
-                                    <div class="script-option" onclick="selectOption(this)">
-                                        <span class="option-letter">${h.letter}</span>
-                                        <span class="option-text">${h.text.split(' - ')[0]}</span>
-                                        <span class="option-tag">${h.bestFor}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        
-                        <div class="script-section">
-                            <div class="script-label">📝 BODY</div>
-                            <div class="script-options">
-                                ${content.bodies.map(b => `
-                                    <div class="script-option" onclick="selectOption(this)">
-                                        <span class="option-letter">${b.letter}</span>
-                                        <span class="option-text">${b.text}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        
-                        <div class="script-section">
-                            <div class="script-label">📢 CTA (Select one)</div>
-                            <div class="script-options">
-                                ${content.ctas.map(c => `
-                                    <div class="script-option" onclick="selectOption(this)">
-                                        <span class="option-letter">${c.letter}</span>
-                                        <span class="option-text">${c.text.split(' - ')[0]}</span>
-                                        <span class="option-tag">${c.bestFor}</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Audience</span>
-                            <span class="meta-value">${content.audience}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Funnel Stage</span>
-                            <span class="meta-value">${content.funnel === 'awareness' ? '🎯 Awareness' : content.funnel === 'consideration' ? '📧 Consideration' : '💰 Decision'}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Hashtags</span>
-                            <span class="meta-value" style="font-size: 0.6rem;">${content.hashtags}</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Scheduled</span>
-                            <span class="meta-value">${content.scheduledDate || 'Not set'}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card-footer">
-                        <div class="card-status">
-                            <span class="status-badge ${content.status}">${content.status.charAt(0).toUpperCase() + content.status.slice(1)}</span>
-                            <span class="card-audience">👤 ${content.audience}</span>
-                        </div>
-                        <div class="card-actions">
-                            <button class="card-btn secondary" onclick="saveDraft(${content.id})">💾 Save</button>
-                            <button class="card-btn primary" onclick="markRecording(${content.id})">🎬 Record</button>
-                        </div>
-                    </div>
+    <!-- Featured Release -->
+    <section class="section section-card" id="music">
+        <div class="section-header">
+            <div class="section-label">New Music</div>
+            <h2>Latest Release</h2>
+            <p>Epic Cool — Where jazz meets soul and spirit</p>
+        </div>
+        <div class="featured-release fade-in">
+            <div class="release-cover">&#127927;</div>
+            <div class="release-info">
+                <span class="release-label">New Album 2025</span>
+                <h3>Epic Cool</h3>
+                <p>Produced by Greg Manning (Keb' Mo', Herb Alpert), Epic Cool features 12 tracks of soulful, danceable jazz with Kirk's signature saxophone sound.</p>
+                <ul class="track-list">
+                    <li><span>Bah-De-Yah!</span><span>4:12</span></li>
+                    <li><span>Pillow Talk</span><span>5:03</span></li>
+                    <li><span>Epic Cool</span><span>4:45</span></li>
+                    <li><span>Grace</span><span>4:28</span></li>
+                </ul>
+                <div class="release-links">
+                    <a href="#" class="btn btn-primary">&#127911; Stream Now</a>
+                    <a href="music.html" class="btn btn-secondary">View All Music</a>
                 </div>
-            `).join('');
-        }
+            </div>
+        </div>
+    </section>
 
-        function renderCalendar() {
-            const calendar = document.getElementById('calendar-grid');
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const today = new Date();
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay());
-            
-            let html = '';
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(startOfWeek);
-                date.setDate(startOfWeek.getDate() + i);
-                const dateStr = date.toISOString().split('T')[0];
-                const isToday = dateStr === today.toISOString().split('T')[0];
-                const dayContent = contentDatabase.filter(c => c.scheduledDate === dateStr);
-                
-                html += `
-                    <div class="calendar-day ${isToday ? 'today' : ''}">
-                        <div class="calendar-day-header">${days[i]} ${date.getDate()}</div>
-                        ${dayContent.map(c => `
-                            <div class="calendar-content-item" style="background: ${c.type === 'sax-tip' ? 'rgba(139, 92, 246, 0.3)' : c.type === 'faith' ? 'rgba(34, 197, 94, 0.3)' : c.type === 'tour' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(245, 158, 11, 0.3)'}">
-                                ${c.title.substring(0, 25)}...
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-            calendar.innerHTML = html;
-        }
+    <!-- Ministry Preview -->
+    <section class="section section-dark" id="ministry">
+        <div class="section-header">
+            <div class="section-label">Faith & Purpose</div>
+            <h2>Ministry & Mission</h2>
+            <p>Music is my ministry. Every note is a prayer.</p>
+        </div>
+        <div class="ministry-grid">
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#128214;</div>
+                <h3>Bible In Your Ear</h3>
+                <p>Daily 15-minute podcast reading through the Bible in a year. Join thousands on this transformative journey through scripture.</p>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#127891;</div>
+                <h3>Music Professor</h3>
+                <p>Teaching the next generation at Visible Music College in Memphis. Passing on 40 years of wisdom and musical excellence.</p>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#10013;&#65039;</div>
+                <h3>Ordained Minister</h3>
+                <p>Masters of Art in Religion. Bringing faith and music together for healing, transformation, and spiritual growth.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 48px;">
+            <a href="ministry.html" class="btn btn-outline-gold">Learn More About Kirk's Ministry</a>
+        </div>
+    </section>
 
-        function renderCampaigns() {
-            const grid = document.getElementById('campaign-grid');
-            grid.innerHTML = campaigns.map(c => `
-                <div class="campaign-card">
-                    <h4>${c.name}</h4>
-                    <p>${c.desc}</p>
-                    <p style="margin-top: 8px; font-size: 0.6rem; color: var(--text-muted);">
-                        📅 ${c.startDate} - ${c.endDate}
-                    </p>
-                    <p style="font-size: 0.6rem; color: var(--accent);">🎯 ${c.goal}</p>
-                    <div class="campaign-progress">
-                        <div class="campaign-progress-bar" style="width: ${(c.contentCount / c.totalContent) * 100}%"></div>
-                    </div>
-                    <p style="font-size: 0.6rem; color: var(--text-muted); margin-top: 6px;">${c.contentCount}/${c.totalContent} content</p>
+    <!-- Upcoming Shows Preview -->
+    <section class="section section-card" id="shows">
+        <div class="section-header">
+            <div class="section-label">Live Performances</div>
+            <h2>Upcoming Shows</h2>
+            <p>Experience the saxophone legend live</p>
+        </div>
+        <div class="shows-list">
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">12</div>
+                    <div class="month">Mar</div>
                 </div>
-            `).join('');
-        }
-
-        function renderTasks() {
-            const taskList = document.getElementById('task-list');
-            taskList.innerHTML = tasks.map(task => `
-                <div class="task-item ${task.done ? 'completed' : ''}" onclick="toggleTask(${task.id})">
-                    <div class="task-checkbox">${task.done ? '✓' : ''}</div>
-                    <div class="task-content">
-                        <h4>${task.title} ${task.priority === 'urgent' ? '🔴' : task.priority === 'high' ? '🟠' : ''}</h4>
-                        <p>${task.desc}</p>
-                    </div>
+                <div class="show-details">
+                    <h4>Lounge at City Winery</h4>
+                    <p>Nashville, TN</p>
                 </div>
-            `).join('');
-        }
+                <a href="#" class="show-cta">Get Tickets</a>
+            </div>
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">--</div>
+                    <div class="month">TBD</div>
+                </div>
+                <div class="show-details">
+                    <h4>Crosstown Theater</h4>
+                    <p>Memphis, TN — Homecoming Show</p>
+                </div>
+                <a href="#" class="show-cta">Coming Soon</a>
+            </div>
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">--</div>
+                    <div class="month">TBD</div>
+                </div>
+                <div class="show-details">
+                    <h4>Blue Note NYC</h4>
+                    <p>New York, NY</p>
+                </div>
+                <a href="#" class="show-cta">Coming Soon</a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="events.html" class="btn btn-outline-gold">View All Shows</a>
+        </div>
+    </section>
 
-        // ==================== ACTIONS ====================
-        function selectOption(element) {
-            const siblings = element.parentElement.querySelectorAll('.script-option');
-            siblings.forEach(s => s.classList.remove('selected'));
-            element.classList.add('selected');
-        }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Kirk Whalum</div>
+                <p>Grammy-nominated saxophonist bringing soul, spirit, and jazz to audiences worldwide for over 40 years.</p>
+                <div class="social-links-footer">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                    <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                    <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="about.html">About Kirk</a>
+                <a href="music.html">Music</a>
+                <a href="events.html">Events</a>
+                <a href="ministry.html">Ministry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="contact.html">Book Kirk</a>
+                <a href="contact.html">Press Kit</a>
+                <a href="contact.html">Contact</a>
+                <a href="#email">Newsletter</a>
+            </div>
+            <div class="footer-col">
+                <h4>Listen</h4>
+                <a href="#">Spotify</a>
+                <a href="#">Apple Music</a>
+                <a href="#">YouTube Music</a>
+                <a href="#">Amazon Music</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kirk Whalum. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
 
-        function updateStage(id, stage) {
-            const content = contentDatabase.find(c => c.id === id);
-            content.stage = stage;
-            if (stage === 'posted') content.status = 'posted';
-            if (stage === 'filmed') content.status = 'recording';
-            if (stage === 'scripted') content.status = 'ready';
-            renderContentPipeline();
-        }
-
-        function saveDraft(id) {
-            const content = contentDatabase.find(c => c.id === id);
-            const selected = document.querySelectorAll(`.content-card .script-option.selected`);
-            alert(`Draft saved for "${content.title}"!\n\nSelected options: ${selected.length}\nStage: ${content.stage}`);
-        }
-
-        function markRecording(id) {
-            const content = contentDatabase.find(c => c.id === id);
-            content.status = 'recording';
-            content.stage = 'filmed';
-            renderContentPipeline();
-            alert(`Marked "${content.title}" as Filming! 🎬`);
-        }
-
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            task.done = !task.done;
-            renderTasks();
-        }
-
-        function addNewContent() {
-            const title = document.getElementById('new-content-title').value;
-            const type = document.getElementById('new-content-type').value;
-            const platform = document.getElementById('new-content-platform').value;
-            const audience = document.getElementById('new-content-audience').value;
-            const funnel = document.getElementById('new-content-funnel').value;
-            
-            if (!title) { alert('Please enter a title'); return; }
-            
-            const newContent = {
-                id: contentDatabase.length + 1,
-                type: type,
-                typeLabel: type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                title: title,
-                status: 'draft',
-                stage: 'idea',
-                platform: platform,
-                audience: audience || 'General',
-                funnel: funnel,
-                campaign: null,
-                scheduledDate: null,
-                hashtags: '#' + title.toLowerCase().replace(/[^a-z0-9]/g, ''),
-                hooks: [{ letter: 'A', text: '"[Your hook here]"', bestFor: 'Custom' }],
-                bodies: [{ letter: 'A', text: '[Body script goes here]', length: 'TBD' }],
-                ctas: [{ letter: 'A', text: '"Follow for more"', bestFor: 'Growth' }]
-            };
-            
-            contentDatabase.push(newContent);
-            closeModal('add-content');
-            renderContentPipeline();
-            document.getElementById('new-content-title').value = '';
-        }
-
-        function addNewCampaign() {
-            const name = document.getElementById('new-campaign-name').value;
-            const desc = document.getElementById('new-campaign-desc').value;
-            
-            if (!name) { alert('Please enter a campaign name'); return; }
-            
-            const newCampaign = {
-                id: name.toLowerCase().replace(/\s+/g, '-'),
-                name: name,
-                desc: desc,
-                startDate: document.getElementById('new-campaign-start').value || '2026-03-01',
-                endDate: document.getElementById('new-campaign-end').value || '2026-04-01',
-                goal: document.getElementById('new-campaign-goal').value || 'TBD',
-                contentCount: 0,
-                totalContent: 3
-            };
-            
-            campaigns.push(newCampaign);
-            closeModal('add-campaign');
-            renderCampaigns();
-        }
-
-        function addNewTask() {
-            const title = document.getElementById('new-task-title').value;
-            const desc = document.getElementById('new-task-desc').value;
-            const priority = document.getElementById('new-task-priority').value;
-            
-            if (!title) { alert('Please enter a task title'); return; }
-            
-            const newTask = {
-                id: tasks.length + 1,
-                title: title,
-                desc: desc,
-                priority: priority,
-                done: false
-            };
-            
-            tasks.push(newTask);
-            closeModal('add-task');
-            renderTasks();
-        }
-
-        // ==================== TABS ====================
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-            });
-        });
-
-        // ==================== FILTERS ====================
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderContentPipeline(btn.dataset.filter);
-            });
-        });
-
-        // ==================== MODALS ====================
-        function openModal(id) {
-            document.getElementById('modal-' + id).classList.add('active');
-            
-            // Populate campaign dropdown
-            if (id === 'add-content') {
-                const select = document.getElementById('new-content-campaign');
-                select.innerHTML = '<option value="">None</option>' + 
-                    campaigns.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            }
-        }
-        
-        function closeModal(id) {
-            document.getElementById('modal-' + id).classList.remove('active');
-        }
-        
-        function openAIModal() {
-            document.getElementById('ai-modal').classList.add('active');
-        }
-        
-        function closeAIModal() {
-            document.getElementById('ai-modal').classList.remove('active');
-        }
-
-        // ==================== AIRTABLE ====================
-        const AIRTABLE_API_KEY = 'pat8agY4F6n8pQTpQ.4ff279e83b16ca106df6d6728f370fab457705a70297eba4d23a42496b750d19';
-        const AIRTABLE_BASE_ID = 'appBR3ClZVRxdCnX1';
-        
-        async function fetchAirtable(tableName) {
-            try {
-                const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableName}`, {
-                    headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` }
-                });
-                const data = await response.json();
-                return data.records || [];
-            } catch (error) {
-                console.error('Airtable error:', error);
-                return [];
-            }
-        }
-        
-        async function loadAirtableData() {
-            const shows = await fetchAirtable('Shows');
-            document.getElementById('show-count').textContent = shows.length;
-            
-            if (shows.length > 0) {
-                const showsList = document.getElementById('shows-list');
-                showsList.innerHTML = shows.slice(0, 5).map(show => {
-                    const f = show.fields;
-                    return `
-                        <div class="show-item">
-                            <div class="show-date">
-                                <div class="day">${f.Date ? f.Date.slice(8) : '--'}</div>
-                                <div class="month">${f.Date ? f.Date.slice(5,7) : 'TBD'}</div>
-                            </div>
-                            <div class="show-info">
-                                <h4>${f.Venue || 'TBD Venue'}</h4>
-                                <p>${f.City || 'TBD'}</p>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            const guests = await fetchAirtable('Guests');
-            document.getElementById('guest-count').textContent = guests.length;
-            
-            if (guests.length > 0) {
-                const guestList = document.getElementById('guest-list');
-                guestList.innerHTML = guests.slice(0, 5).map(guest => {
-                    const f = guest.fields;
-                    const initials = (f.Name || '?').split(' ').map(n => n[0]).join('').slice(0,2);
-                    return `
-                        <div class="guest-item">
-                            <div class="guest-avatar">${initials}</div>
-                            <div class="guest-info">
-                                <h4>${f.Name || 'Unknown'}</h4>
-                                <p>${f.Status || 'Pending'}</p>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-        
-        function refreshShows() {
-            loadAirtableData();
-            alert('Refreshing shows from Airtable...');
-        }
-        
-        function refreshGuests() {
-            loadAirtableData();
-            alert('Refreshing guests from Airtable...');
-        }
-
-        // ==================== INIT ====================
-        window.addEventListener('DOMContentLoaded', () => {
-            renderContentPipeline();
-            renderCalendar();
-            renderCampaigns();
-            renderTasks();
-            loadAirtableData();
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
