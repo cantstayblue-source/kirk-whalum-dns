@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/mc/">
+    <title>Dashboard — Kirk Whalum Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mc-styles.css">
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="mc-mobile-toggle" aria-label="Toggle menu">&#9776;</button>
+
+<div class="mc-layout">
+    <aside class="mc-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">&#127927;</div>
+            <div class="sidebar-brand">
+                <h1>Kirk Whalum</h1>
+                <span>Mission Control</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link active"><span class="icon">&#128202;</span><span class="label">Dashboard</span></a>
+            <a href="content.html" class="sidebar-link"><span class="icon">&#128249;</span><span class="label">Content</span></a>
+            <a href="shows.html" class="sidebar-link"><span class="icon">&#127908;</span><span class="label">Shows</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Business</div>
+            <a href="funnels.html" class="sidebar-link"><span class="icon">&#127919;</span><span class="label">Funnels</span></a>
+            <a href="crm.html" class="sidebar-link"><span class="icon">&#128101;</span><span class="label">CRM</span></a>
+            <a href="tasks.html" class="sidebar-link"><span class="icon">&#9889;</span><span class="label">Tasks</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">System</div>
+            <a href="settings.html" class="sidebar-link"><span class="icon">&#9881;</span><span class="label">Settings</span></a>
+            <a href="api-docs.html" class="sidebar-link"><span class="icon">&#128218;</span><span class="label">API Docs</span></a>
+            <div class="sidebar-divider"></div>
+            <a href="../website.html" class="sidebar-link"><span class="icon">&#127760;</span><span class="label">Public Site</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="ai-badge"><span class="dot"></span> <span>Valarnette Active</span></div>
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="mcToggleTheme()">
+                <span class="toggle-icon">&#9728;&#65039;</span> Light Mode
+            </button>
+        </div>
+    </aside>
+    <div class="mc-sidebar-overlay"></div>
+    <main class="mc-main">
+
+        <!-- Header -->
+        <div class="mc-header">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Welcome back, Kirk. Here's what's happening.</p>
+            </div>
+            <div class="mc-header-actions">
+                <button class="btn btn-outline btn-sm" onclick="location.reload()">&#8635; Refresh</button>
+                <button class="btn btn-primary btn-sm" onclick="window.location='content.html'">+ New Content</button>
+            </div>
+        </div>
+
+        <div class="mc-body">
+
+            <!-- Metrics Row -->
+            <div class="metrics-row" id="metrics-row">
+                <div class="metric-card">
+                    <div class="value" id="metric-content">--</div>
+                    <div class="label">Content Pieces</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" id="metric-shows">--</div>
+                    <div class="label">Upcoming Shows</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" id="metric-crm">--</div>
+                    <div class="label">CRM Contacts</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value" id="metric-tasks">--</div>
+                    <div class="label">Open Tasks</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="content.html" class="quick-action">
+                    <span class="qa-icon">&#128249;</span>
+                    <span class="qa-text">Content Pipeline</span>
+                </a>
+                <a href="shows.html" class="quick-action">
+                    <span class="qa-icon">&#127908;</span>
+                    <span class="qa-text">Show Calendar</span>
+                </a>
+                <a href="crm.html" class="quick-action">
+                    <span class="qa-icon">&#128101;</span>
+                    <span class="qa-text">Guest CRM</span>
+                </a>
+                <a href="tasks.html" class="quick-action">
+                    <span class="qa-icon">&#9889;</span>
+                    <span class="qa-text">Task Board</span>
+                </a>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid-2">
+
+                <!-- Left Column: Activity Feed -->
+                <div class="mc-card">
+                    <div class="mc-card-header">
+                        <h3>&#128340; Activity Feed</h3>
+                        <span class="text-xs text-dim" id="activity-count"></span>
+                    </div>
+                    <div class="mc-card-body" id="activity-feed" style="padding: 12px;">
+                        <div class="empty-state" id="activity-empty">
+                            <div class="icon">&#128203;</div>
+                            <h3>No activity yet</h3>
+                            <p>Actions you take across Mission Control will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+
+                    <!-- Upcoming Shows Preview -->
+                    <div class="mc-card">
+                        <div class="mc-card-header">
+                            <h3>&#127908; Upcoming Shows</h3>
+                            <a href="shows.html" class="btn btn-outline btn-sm">View All</a>
+                        </div>
+                        <div class="mc-card-body" id="shows-preview" style="padding: 12px;">
+                        </div>
+                    </div>
+
+                    <!-- Content Status Breakdown -->
+                    <div class="mc-card">
+                        <div class="mc-card-header">
+                            <h3>&#128249; Content Status</h3>
+                            <a href="content.html" class="btn btn-outline btn-sm">Manage</a>
+                        </div>
+                        <div class="mc-card-body" id="content-breakdown" style="padding: 16px 20px;">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div><!-- /grid-2 -->
+
+        </div><!-- /mc-body -->
+    </main>
+</div>
+
+<script src="mc-data.js"></script>
+<script src="mc-api.js"></script>
+<script src="mc-app.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    const store = window.mcStore;
+    if (!store) return;
+
+    // ── Metrics ──
+    const summary = store.summary();
+    document.getElementById('metric-content').textContent = summary.content;
+    document.getElementById('metric-shows').textContent = summary.upcomingShows;
+    document.getElementById('metric-crm').textContent = summary.guests;
+    document.getElementById('metric-tasks').textContent = summary.openTasks;
+
+    // ── Activity Feed ──
+    const activity = store.getActivity(10);
+    const feedEl = document.getElementById('activity-feed');
+    const emptyEl = document.getElementById('activity-empty');
+    const countEl = document.getElementById('activity-count');
+
+    if (activity.length > 0) {
+        emptyEl.style.display = 'none';
+        countEl.textContent = activity.length + ' recent';
+        feedEl.innerHTML = activity.map(item => {
+            let icon = '&#128196;';
+            if (item.action === 'create') icon = '&#10024;';
+            else if (item.action === 'update') icon = '&#9999;&#65039;';
+            else if (item.action === 'delete') icon = '&#128465;&#65039;';
+
+            return `
+                <div class="list-item" style="cursor: default;">
+                    <div style="width:32px; height:32px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0;">
+                        ${icon}
+                    </div>
+                    <div class="list-item-info">
+                        <h4>${escapeHtml(item.details)}</h4>
+                        <p>${mcTimeAgo(item.timestamp)}</p>
+                    </div>
+                    <span class="badge badge-${item.action === 'create' ? 'ready' : item.action === 'delete' ? 'high' : 'draft'}">${item.action}</span>
+                </div>
+            `;
+        }).join('');
+    } else {
+        countEl.textContent = '';
+    }
+
+    // ── Upcoming Shows ──
+    const shows = store.getAll('shows')
+        .filter(s => !s.completed)
+        .sort((a, b) => {
+            if (!a.date && !b.date) return 0;
+            if (!a.date) return 1;
+            if (!b.date) return -1;
+            return new Date(a.date) - new Date(b.date);
+        })
+        .slice(0, 3);
+
+    const showsEl = document.getElementById('shows-preview');
+
+    if (shows.length === 0) {
+        showsEl.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">&#127908;</div>
+                <h3>No upcoming shows</h3>
+                <p>Add shows to see them here.</p>
+            </div>
+        `;
+    } else {
+        showsEl.innerHTML = shows.map(show => {
+            const dt = mcFormatShortDate(show.date);
+            const statusClass = (show.status || 'planning').toLowerCase().replace(/\s+/g, '-');
+            return `
+                <div class="list-item">
+                    <div class="show-date-badge">
+                        <div class="day">${dt.day}</div>
+                        <div class="month">${dt.month}</div>
+                    </div>
+                    <div class="list-item-info">
+                        <h4>${escapeHtml(show.venue)}</h4>
+                        <p>${escapeHtml(show.city)}, ${escapeHtml(show.state)}</p>
+                    </div>
+                    <span class="badge badge-${statusClass}">${show.status}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ── Content Status Breakdown ──
+    const contentByStatus = summary.contentByStatus;
+    const breakdownEl = document.getElementById('content-breakdown');
+
+    const statusConfig = {
+        draft: { label: 'Draft', color: 'var(--warning)', bgColor: 'var(--warning-dim)' },
+        ready: { label: 'Ready', color: 'var(--success)', bgColor: 'var(--success-dim)' },
+        published: { label: 'Published', color: 'var(--info)', bgColor: 'var(--info-dim)' },
+        planned: { label: 'Planned', color: 'var(--text-dim)', bgColor: 'rgba(136,136,136,0.15)' },
+        recording: { label: 'Recording', color: 'var(--info)', bgColor: 'var(--info-dim)' },
+        analyzing: { label: 'Analyzing', color: 'var(--accent)', bgColor: 'var(--accent-dim)' }
+    };
+
+    const totalContent = summary.content || 1;
+    let breakdownHtml = '';
+
+    for (const [status, count] of Object.entries(contentByStatus)) {
+        const config = statusConfig[status] || { label: status, color: 'var(--text-dim)', bgColor: 'rgba(136,136,136,0.15)' };
+        const pct = Math.round((count / totalContent) * 100);
+        breakdownHtml += `
+            <div style="margin-bottom: 14px;">
+                <div class="flex-between mb-1">
+                    <span style="font-size:0.8rem; font-weight:500; display:flex; align-items:center; gap:8px;">
+                        <span style="width:8px; height:8px; border-radius:50%; background:${config.color}; display:inline-block;"></span>
+                        ${config.label}
+                    </span>
+                    <span style="font-size:0.75rem; color:var(--text-dim);">${count} <span class="text-muted">(${pct}%)</span></span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" style="width:${pct}%; background:${config.color};"></div>
+                </div>
+            </div>
+        `;
+    }
+
+    if (breakdownHtml === '') {
+        breakdownHtml = '<p class="text-dim text-sm">No content yet.</p>';
+    }
+
+    breakdownEl.innerHTML = breakdownHtml;
+
+    // ── Utility ──
+    function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+})();
+</script>
+</body>
+</html>

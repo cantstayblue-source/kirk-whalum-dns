@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/mc/">
+    <title>API Documentation — Kirk Whalum Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mc-styles.css">
+    <style>
+        /* ── Two-Column Layout ── */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .two-col .doc-content {
+            min-width: 0;
+        }
+
+        /* ── Try-It Live Panel ── */
+        .try-panel {
+            position: sticky;
+            top: 80px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .try-panel-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .try-panel-header h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .try-panel-body {
+            padding: 16px;
+        }
+
+        .try-panel-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--accent);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .try-panel-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .try-panel-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .result-output {
+            margin-top: 12px;
+            padding: 14px;
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: #22c55e;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .result-output.error {
+            color: var(--danger);
+        }
+
+        .result-output:empty {
+            display: none;
+        }
+
+        /* ── Table of Contents ── */
+        .toc {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .toc h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 6px 20px;
+        }
+
+        .toc a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        .toc a .toc-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--border-light);
+            flex-shrink: 0;
+        }
+
+        .toc a:hover .toc-dot {
+            background: var(--accent);
+        }
+
+        /* ── API Section ── */
+        .api-section {
+            margin-bottom: 28px;
+            border-left: 3px solid var(--accent);
+            padding-left: 0;
+        }
+
+        .api-section .mc-card {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .api-section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .api-section-title h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* ── Badge Count ── */
+        .badge-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 22px;
+            padding: 0 7px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-radius: 11px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        /* ── API Method Name ── */
+        .api-method {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(201, 162, 39, 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* ── API Table ── */
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .api-table thead th {
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .api-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        .api-table tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        .api-table tbody tr:hover {
+            background: rgba(201, 162, 39, 0.04);
+        }
+
+        .api-table tbody td {
+            padding: 10px 14px;
+            vertical-align: top;
+        }
+
+        .api-table .method-col {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: var(--accent);
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .api-table .desc-col {
+            color: var(--text-dim);
+        }
+
+        .api-table .return-col {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: var(--info);
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        /* ── Code Block ── */
+        .code-block {
+            position: relative;
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        .code-block-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .copy-btn,
+        .run-btn {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn {
+            background: var(--border-light);
+            color: var(--text-dim);
+        }
+
+        .copy-btn:hover {
+            background: var(--border-focus);
+            color: var(--text);
+        }
+
+        .run-btn {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .run-btn:hover {
+            opacity: 0.85;
+        }
+
+        /* ── Inline Result ── */
+        .inline-result {
+            margin-top: 8px;
+            padding: 12px 14px;
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: #22c55e;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .inline-result.error {
+            color: var(--danger);
+        }
+
+        .inline-result.visible {
+            display: block;
+        }
+
+        /* ── Syntax Highlighting ── */
+        .syn-method { color: var(--accent); }
+        .syn-string { color: #22c55e; }
+        .syn-number { color: #3b82f6; }
+        .syn-keyword { color: #a855f7; }
+        .syn-comment { color: var(--text-muted); font-style: italic; }
+        .syn-arrow { color: var(--text-dim); }
+        .syn-bracket { color: var(--text-dim); }
+        .syn-prop { color: #ec4899; }
+
+        /* ── Quick Start ── */
+        .quick-start-card {
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.08), rgba(201, 162, 39, 0.02));
+            border: 1px solid rgba(201, 162, 39, 0.25);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .quick-start-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-start-card p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+
+        /* ── Version Badge ── */
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        /* ── Examples label ── */
+        .examples-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin: 16px 0 8px 0;
+            font-weight: 600;
+        }
+
+        /* ── Agent method table ── */
+        .agent-method-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .agent-method-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--bg-dark);
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .agent-method-item:hover {
+            border-color: var(--border-light);
+        }
+
+        .agent-method-item .method-name {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: 280px;
+        }
+
+        .agent-method-item .method-desc {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        /* ── Event tag ── */
+        .event-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin: 2px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1200px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .try-panel {
+                position: static;
+            }
+
+            .agent-method-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .agent-method-item .method-name {
+                min-width: unset;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .api-table {
+                font-size: 0.72rem;
+            }
+
+            .api-table .method-col {
+                font-size: 0.7rem;
+            }
+
+            .code-block pre {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="mc-mobile-toggle" aria-label="Toggle menu">&#9776;</button>
+
+<div class="mc-layout">
+    <aside class="mc-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">&#127927;</div>
+            <div class="sidebar-brand">
+                <h1>Kirk Whalum</h1>
+                <span>Mission Control</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><span class="icon">&#128202;</span><span class="label">Dashboard</span></a>
+            <a href="content.html" class="sidebar-link"><span class="icon">&#128249;</span><span class="label">Content</span></a>
+            <a href="shows.html" class="sidebar-link"><span class="icon">&#127908;</span><span class="label">Shows</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Business</div>
+            <a href="funnels.html" class="sidebar-link"><span class="icon">&#127919;</span><span class="label">Funnels</span></a>
+            <a href="crm.html" class="sidebar-link"><span class="icon">&#128101;</span><span class="label">CRM</span></a>
+            <a href="tasks.html" class="sidebar-link"><span class="icon">&#9889;</span><span class="label">Tasks</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">System</div>
+            <a href="settings.html" class="sidebar-link"><span class="icon">&#9881;</span><span class="label">Settings</span></a>
+            <a href="api-docs.html" class="sidebar-link active"><span class="icon">&#128218;</span><span class="label">API Docs</span></a>
+            <div class="sidebar-divider"></div>
+            <a href="../website.html" class="sidebar-link"><span class="icon">&#127760;</span><span class="label">Public Site</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="ai-badge"><span class="dot"></span> <span>Valarnette Active</span></div>
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="mcToggleTheme()">
+                <span class="toggle-icon">&#9728;&#65039;</span> Light Mode
+            </button>
+        </div>
+    </aside>
+    <div class="mc-sidebar-overlay"></div>
+    <main class="mc-main">
+
+        <!-- Header -->
+        <div class="mc-header">
+            <div>
+                <h2 style="display:flex; align-items:center; gap:12px;">
+                    API Documentation
+                    <span class="version-badge">v2.0</span>
+                </h2>
+                <p>Complete reference for the Mission Control API &mdash; used by Valarnette agents and browser console</p>
+            </div>
+            <div class="mc-header-actions">
+                <button class="btn btn-outline btn-sm" onclick="if(window.MC)MC.help()">MC.help()</button>
+                <button class="btn btn-primary btn-sm" onclick="document.getElementById('console-input').focus()">Open Console</button>
+            </div>
+        </div>
+
+        <div class="mc-body">
+            <div class="two-col">
+
+                <!-- ========== LEFT: Documentation Content ========== -->
+                <div class="doc-content">
+
+                    <!-- Quick Start -->
+                    <div class="quick-start-card">
+                        <h3>&#9889; Quick Start</h3>
+                        <p style="margin-top:0; margin-bottom:12px;">Open your browser console (<kbd style="padding:2px 6px; background:var(--border-light); border-radius:4px; font-size:0.75rem;">F12</kbd>) and try:</p>
+                        <div class="code-block">
+                            <pre><span class="syn-method">MC.dashboard</span>.<span class="syn-method">summary</span>()</pre>
+                            <div class="code-block-actions">
+                                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                <button class="run-btn" onclick="runCode('MC.dashboard.summary()', this)">Run</button>
+                            </div>
+                        </div>
+                        <div class="inline-result" id="quickstart-result"></div>
+                        <p>Or run <span class="api-method">MC.help()</span> for the full command reference.</p>
+                    </div>
+
+                    <!-- Table of Contents -->
+                    <div class="toc" id="toc">
+                        <h3>Table of Contents</h3>
+                        <div class="toc-grid">
+                            <a href="#sec-content" onclick="smoothScroll(event,'sec-content')"><span class="toc-dot"></span> MC.content</a>
+                            <a href="#sec-shows" onclick="smoothScroll(event,'sec-shows')"><span class="toc-dot"></span> MC.shows</a>
+                            <a href="#sec-guests" onclick="smoothScroll(event,'sec-guests')"><span class="toc-dot"></span> MC.guests</a>
+                            <a href="#sec-tasks" onclick="smoothScroll(event,'sec-tasks')"><span class="toc-dot"></span> MC.tasks</a>
+                            <a href="#sec-funnels" onclick="smoothScroll(event,'sec-funnels')"><span class="toc-dot"></span> MC.funnels</a>
+                            <a href="#sec-campaigns" onclick="smoothScroll(event,'sec-campaigns')"><span class="toc-dot"></span> MC.campaigns</a>
+                            <a href="#sec-products" onclick="smoothScroll(event,'sec-products')"><span class="toc-dot"></span> MC.products</a>
+                            <a href="#sec-agent" onclick="smoothScroll(event,'sec-agent')"><span class="toc-dot"></span> Agent Operations</a>
+                            <a href="#sec-events" onclick="smoothScroll(event,'sec-events')"><span class="toc-dot"></span> Events</a>
+                            <a href="#sec-dashboard" onclick="smoothScroll(event,'sec-dashboard')"><span class="toc-dot"></span> Dashboard</a>
+                            <a href="#sec-settings" onclick="smoothScroll(event,'sec-settings')"><span class="toc-dot"></span> Settings &amp; Data</a>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.content ═══════════ -->
+                    <div class="api-section" id="sec-content">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.content</h3>
+                                    <span class="badge-count" id="count-content">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Content Pipeline</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.content</span>.<span class="syn-method">list</span>({ <span class="syn-prop">status</span>: <span class="syn-string">'draft'</span> })</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.content.list({ status: \'draft\' })', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.content</span>.<span class="syn-method">search</span>(<span class="syn-string">'saxophone'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.content.search(\'saxophone\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.content</span>.<span class="syn-method">countBy</span>(<span class="syn-string">'type'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.content.countBy(\'type\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.shows ═══════════ -->
+                    <div class="api-section" id="sec-shows">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.shows</h3>
+                                    <span class="badge-count" id="count-shows">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Shows &amp; Events</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.shows</span>.<span class="syn-method">sorted</span>(<span class="syn-string">'date'</span>, <span class="syn-string">'asc'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.shows.sorted(\'date\', \'asc\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.shows</span>.<span class="syn-method">list</span>({ <span class="syn-prop">showStatus</span>: <span class="syn-string">'confirmed'</span> })</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.shows.list({ showStatus: \'confirmed\' })', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.shows</span>.<span class="syn-method">countBy</span>(<span class="syn-string">'status'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.shows.countBy(\'status\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.guests ═══════════ -->
+                    <div class="api-section" id="sec-guests">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.guests</h3>
+                                    <span class="badge-count" id="count-guests">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Cafe Kirk CRM</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.guests</span>.<span class="syn-method">list</span>({ <span class="syn-prop">category</span>: <span class="syn-string">'warm'</span> })</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.guests.list({ category: \'warm\' })', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.guests</span>.<span class="syn-method">search</span>(<span class="syn-string">'Morton'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.guests.search(\'Morton\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.guests</span>.<span class="syn-method">countBy</span>(<span class="syn-string">'category'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.guests.countBy(\'category\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.tasks ═══════════ -->
+                    <div class="api-section" id="sec-tasks">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.tasks</h3>
+                                    <span class="badge-count" id="count-tasks">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Task Management</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.tasks</span>.<span class="syn-method">list</span>({ <span class="syn-prop">assignee</span>: <span class="syn-string">'valarnette'</span>, <span class="syn-prop">status</span>: <span class="syn-string">'todo'</span> })</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.tasks.list({ assignee: \'valarnette\', status: \'todo\' })', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.tasks</span>.<span class="syn-method">where</span>(<span class="syn-arrow">t =&gt;</span> <span class="syn-arrow">t</span>.<span class="syn-prop">priority</span> === <span class="syn-string">'high'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.tasks.where(t => t.priority === \'high\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.tasks</span>.<span class="syn-method">groupBy</span>(<span class="syn-string">'status'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.tasks.groupBy(\'status\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.funnels ═══════════ -->
+                    <div class="api-section" id="sec-funnels">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.funnels</h3>
+                                    <span class="badge-count" id="count-funnels">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Funnel Planning</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.funnels</span>.<span class="syn-method">list</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.funnels.list()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.funnels</span>.<span class="syn-method">countBy</span>(<span class="syn-string">'status'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.funnels.countBy(\'status\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.funnels</span>.<span class="syn-method">schema</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.funnels.schema()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.campaigns ═══════════ -->
+                    <div class="api-section" id="sec-campaigns">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.campaigns</h3>
+                                    <span class="badge-count" id="count-campaigns">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Campaign Manager</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.campaigns</span>.<span class="syn-method">list</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.campaigns.list()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.campaigns</span>.<span class="syn-method">groupBy</span>(<span class="syn-string">'status'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.campaigns.groupBy(\'status\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.campaigns</span>.<span class="syn-method">search</span>(<span class="syn-string">'summer'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.campaigns.search(\'summer\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ COLLECTION: MC.products ═══════════ -->
+                    <div class="api-section" id="sec-products">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>MC.products</h3>
+                                    <span class="badge-count" id="count-products">--</span>
+                                </div>
+                                <span class="text-xs text-dim">Product Catalog</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <table class="api-table">
+                                    <thead>
+                                        <tr><th>Method</th><th>Description</th><th>Returns</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td class="method-col">.list([filter])</td><td class="desc-col">Get all items, optional filter object</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.get(id)</td><td class="desc-col">Get item by ID</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.create(data)</td><td class="desc-col">Create new item</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.update(id, data)</td><td class="desc-col">Merge changes into existing item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.remove(id)</td><td class="desc-col">Delete by ID</td><td class="return-col">Boolean</td></tr>
+                                        <tr><td class="method-col">.count([filter])</td><td class="desc-col">Count items, optional filter</td><td class="return-col">Number</td></tr>
+                                        <tr><td class="method-col">.search(query, [fields])</td><td class="desc-col">Full-text search across fields</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.sorted(field, dir)</td><td class="desc-col">Sort by field value</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.where(fn)</td><td class="desc-col">Custom filter function</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.first([filter])</td><td class="desc-col">First matching item</td><td class="return-col">Object|null</td></tr>
+                                        <tr><td class="method-col">.groupBy(field)</td><td class="desc-col">Group by field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.countBy(field)</td><td class="desc-col">Count per field value</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.schema()</td><td class="desc-col">Collection schema info</td><td class="return-col">Object</td></tr>
+                                        <tr><td class="method-col">.batchCreate([items])</td><td class="desc-col">Bulk create multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchUpdate([{id,data}])</td><td class="desc-col">Bulk update multiple items</td><td class="return-col">Array</td></tr>
+                                        <tr><td class="method-col">.batchRemove([ids])</td><td class="desc-col">Bulk remove by ID array</td><td class="return-col">Array</td></tr>
+                                    </tbody>
+                                </table>
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.products</span>.<span class="syn-method">list</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.products.list()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.products</span>.<span class="syn-method">sorted</span>(<span class="syn-string">'price'</span>, <span class="syn-string">'desc'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.products.sorted(\'price\', \'desc\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.products</span>.<span class="syn-method">countBy</span>(<span class="syn-string">'category'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.products.countBy(\'category\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ AGENT OPERATIONS ═══════════ -->
+                    <div class="api-section" id="sec-agent">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>&#129302; Agent Operations</h3>
+                                </div>
+                                <span class="text-xs text-dim">MC.agent</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <div class="agent-method-list">
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.myTasks([status])</div>
+                                        <div class="method-desc">Get all Valarnette tasks. Optional status filter: <span class="api-method">'todo'</span>, <span class="api-method">'in-progress'</span>, <span class="api-method">'done'</span></div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.addTask(title, opts)</div>
+                                        <div class="method-desc">Quick-add a task. Options: <span class="api-method">{description, priority, status, assignee, dueDate}</span></div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.startTask(id)</div>
+                                        <div class="method-desc">Move a task to in-progress status</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.completeTask(id)</div>
+                                        <div class="method-desc">Mark a task as done</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.nextTask()</div>
+                                        <div class="method-desc">Get the highest priority pending task assigned to the agent</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.log(message)</div>
+                                        <div class="method-desc">Log agent activity to the audit trail</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.statusReport()</div>
+                                        <div class="method-desc">Full system status report including workload breakdown for agent and Kirk</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.triggerEzraEffect(showId)</div>
+                                        <div class="method-desc">Create post-show follow-up tasks (Day 1: Thank you, Day 2: Share content, Day 3: Next invite)</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.scheduleContent(id, date)</div>
+                                        <div class="method-desc">Schedule content for a specific publishing date. Sets status to 'ready'</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.agent.advanceGuest(id, status)</div>
+                                        <div class="method-desc">Move a guest through the CRM pipeline. Statuses: identified, reached-out, in-talks, confirmed, appeared, follow-up</div>
+                                    </div>
+                                </div>
+
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.agent</span>.<span class="syn-method">myTasks</span>(<span class="syn-string">'todo'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.agent.myTasks(\'todo\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.agent</span>.<span class="syn-method">nextTask</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.agent.nextTask()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.agent</span>.<span class="syn-method">statusReport</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.agent.statusReport()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.agent</span>.<span class="syn-method">addTask</span>(<span class="syn-string">'Review content pipeline'</span>, {
+  <span class="syn-prop">priority</span>: <span class="syn-string">'high'</span>,
+  <span class="syn-prop">description</span>: <span class="syn-string">'Audit all draft content and move ready items forward'</span>
+})</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.agent.addTask(\'Review content pipeline\', { priority: \'high\', description: \'Audit all draft content and move ready items forward\' })', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ EVENTS ═══════════ -->
+                    <div class="api-section" id="sec-events">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>&#128225; Events</h3>
+                                </div>
+                                <span class="text-xs text-dim">MC.on / MC.off / MC.once</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <div class="agent-method-list" style="margin-bottom: 20px;">
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.on(event, handler)</div>
+                                        <div class="method-desc">Subscribe to events. Returns an unsubscribe function you can call later</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.off(event, handler)</div>
+                                        <div class="method-desc">Remove a specific event handler</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.once(event, handler)</div>
+                                        <div class="method-desc">One-time subscription &mdash; automatically unsubscribes after first trigger</div>
+                                    </div>
+                                </div>
+
+                                <div class="examples-label" style="margin-top:20px;">Available Events</div>
+                                <div style="display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 20px;">
+                                    <span class="event-tag">change</span>
+                                    <span class="event-tag">content:created</span>
+                                    <span class="event-tag">content:updated</span>
+                                    <span class="event-tag">content:deleted</span>
+                                    <span class="event-tag">shows:created</span>
+                                    <span class="event-tag">shows:updated</span>
+                                    <span class="event-tag">shows:deleted</span>
+                                    <span class="event-tag">guests:created</span>
+                                    <span class="event-tag">guests:updated</span>
+                                    <span class="event-tag">guests:deleted</span>
+                                    <span class="event-tag">tasks:created</span>
+                                    <span class="event-tag">tasks:updated</span>
+                                    <span class="event-tag">tasks:deleted</span>
+                                    <span class="event-tag">funnels:created</span>
+                                    <span class="event-tag">funnels:updated</span>
+                                    <span class="event-tag">funnels:deleted</span>
+                                    <span class="event-tag">campaigns:created</span>
+                                    <span class="event-tag">campaigns:updated</span>
+                                    <span class="event-tag">campaigns:deleted</span>
+                                    <span class="event-tag">products:created</span>
+                                    <span class="event-tag">products:updated</span>
+                                    <span class="event-tag">products:deleted</span>
+                                    <span class="event-tag">settings:changed</span>
+                                    <span class="event-tag">data:imported</span>
+                                    <span class="event-tag">data:reset</span>
+                                    <span class="event-tag">*</span>
+                                </div>
+
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-comment">// Subscribe to new tasks</span>
+<span class="syn-keyword">const</span> unsub = <span class="syn-method">MC</span>.<span class="syn-method">on</span>(<span class="syn-string">'tasks:created'</span>, <span class="syn-arrow">task =&gt;</span> {
+  console.<span class="syn-method">log</span>(<span class="syn-string">'New task:'</span>, task.title)
+})</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><span class="syn-comment">// Listen to all changes (wildcard)</span>
+<span class="syn-method">MC</span>.<span class="syn-method">on</span>(<span class="syn-string">'*'</span>, (<span class="syn-arrow">data</span>, <span class="syn-arrow">event</span>) <span class="syn-arrow">=&gt;</span> {
+  console.<span class="syn-method">log</span>(<span class="syn-string">'Event:'</span>, event, data)
+})</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                    </div>
+                                </div>
+                                <div class="code-block">
+                                    <pre><span class="syn-comment">// One-time listener for next content creation</span>
+<span class="syn-method">MC</span>.<span class="syn-method">once</span>(<span class="syn-string">'content:created'</span>, <span class="syn-arrow">item =&gt;</span> {
+  console.<span class="syn-method">log</span>(<span class="syn-string">'First new content:'</span>, item.title)
+})</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ DASHBOARD ═══════════ -->
+                    <div class="api-section" id="sec-dashboard">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>&#128200; Dashboard</h3>
+                                </div>
+                                <span class="text-xs text-dim">MC.dashboard</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <div class="agent-method-list" style="margin-bottom: 16px;">
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.dashboard.summary()</div>
+                                        <div class="method-desc">Aggregate metrics across all collections &mdash; content count, upcoming shows, guests, open tasks, content by status, guests by status</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.dashboard.activity(n)</div>
+                                        <div class="method-desc">Recent activity feed. Pass a number to limit results (default: 10)</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.dashboard.health()</div>
+                                        <div class="method-desc">Health score (0&ndash;100) with warnings for pipeline bottlenecks and workload issues</div>
+                                    </div>
+                                </div>
+
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.dashboard</span>.<span class="syn-method">summary</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.dashboard.summary()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.dashboard</span>.<span class="syn-method">activity</span>(<span class="syn-number">5</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.dashboard.activity(5)', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.dashboard</span>.<span class="syn-method">health</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.dashboard.health()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══════════ SETTINGS & DATA ═══════════ -->
+                    <div class="api-section" id="sec-settings">
+                        <div class="mc-card">
+                            <div class="mc-card-header">
+                                <div class="api-section-title">
+                                    <h3>&#9881;&#65039; Settings &amp; Data</h3>
+                                </div>
+                                <span class="text-xs text-dim">MC.settings / MC.export / MC.import</span>
+                            </div>
+                            <div class="mc-card-body">
+                                <div class="examples-label" style="margin-top:0;">Settings</div>
+                                <div class="agent-method-list" style="margin-bottom: 20px;">
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.settings.get(key)</div>
+                                        <div class="method-desc">Read a single setting value by key</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.settings.set(key, val)</div>
+                                        <div class="method-desc">Write a setting value. Emits <span class="event-tag">settings:changed</span> event</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.settings.getAll()</div>
+                                        <div class="method-desc">Get all settings as an object</div>
+                                    </div>
+                                </div>
+
+                                <div class="examples-label">Data Management</div>
+                                <div class="agent-method-list" style="margin-bottom: 20px;">
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.export()</div>
+                                        <div class="method-desc">Export all Mission Control data as a JSON string for backup</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.import(json)</div>
+                                        <div class="method-desc">Import data from a JSON string. Emits <span class="event-tag">data:imported</span> event</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.reset()</div>
+                                        <div class="method-desc">Reset all data to defaults (shows confirmation dialog)</div>
+                                    </div>
+                                    <div class="agent-method-item">
+                                        <div class="method-name">MC.collections()</div>
+                                        <div class="method-desc">List all collections with their counts and schemas</div>
+                                    </div>
+                                </div>
+
+                                <div class="examples-label">Examples</div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.settings</span>.<span class="syn-method">getAll</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.settings.getAll()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC</span>.<span class="syn-method">collections</span>()</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.collections()', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                                <div class="code-block">
+                                    <pre><span class="syn-method">MC.settings</span>.<span class="syn-method">get</span>(<span class="syn-string">'agentName'</span>)</pre>
+                                    <div class="code-block-actions">
+                                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                        <button class="run-btn" onclick="runCode('MC.settings.get(\'agentName\')', this)">Run</button>
+                                    </div>
+                                </div>
+                                <div class="inline-result"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /doc-content -->
+
+                <!-- ========== RIGHT: Live Console Panel ========== -->
+                <div>
+                    <div class="try-panel" id="try-panel">
+                        <div class="try-panel-header">
+                            <h3>&#128187; Try It Live</h3>
+                            <span class="badge badge-ready" style="font-size:0.6rem;">Connected</span>
+                        </div>
+                        <div class="try-panel-body">
+                            <label style="font-size:0.7rem; color:var(--text-muted); display:block; margin-bottom:6px;">Enter any MC command:</label>
+                            <textarea class="try-panel-input" id="console-input" spellcheck="false" placeholder="MC.dashboard.summary()">MC.dashboard.summary()</textarea>
+                            <div class="try-panel-actions">
+                                <button class="run-btn" style="padding:8px 18px; font-size:0.75rem;" onclick="runConsole()">&#9654; Run</button>
+                                <button class="copy-btn" style="padding:8px 14px; font-size:0.75rem;" onclick="clearConsole()">Clear</button>
+                            </div>
+                            <div class="result-output" id="console-output"></div>
+
+                            <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border);">
+                                <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:8px;">Quick Commands</label>
+                                <div style="display:flex; flex-direction:column; gap:4px;">
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.dashboard.summary()')">MC.dashboard.summary()</button>
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.dashboard.health()')">MC.dashboard.health()</button>
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.agent.statusReport()')">MC.agent.statusReport()</button>
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.collections()')">MC.collections()</button>
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.agent.nextTask()')">MC.agent.nextTask()</button>
+                                    <button class="btn btn-outline btn-sm" style="justify-content:flex-start; text-align:left; font-family:monospace; font-size:0.7rem;" onclick="quickRun('MC.content.countBy(\'type\')')">MC.content.countBy('type')</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /two-col -->
+        </div><!-- /mc-body -->
+    </main>
+</div>
+
+<script src="mc-data.js"></script>
+<script src="mc-api.js"></script>
+<script src="mc-app.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    // ── Load dynamic collection counts ──
+    function loadCounts() {
+        if (!window.MC) return;
+        var collections = ['content', 'shows', 'guests', 'tasks', 'funnels', 'campaigns', 'products'];
+        collections.forEach(function (name) {
+            var el = document.getElementById('count-' + name);
+            if (el && MC[name]) {
+                el.textContent = MC[name].count();
+            }
+        });
+    }
+
+    loadCounts();
+
+    // ── Smooth scroll navigation ──
+    window.smoothScroll = function (e, id) {
+        e.preventDefault();
+        var el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', '#' + id);
+        }
+    };
+
+    // ── Copy code to clipboard ──
+    window.copyCode = function (btn) {
+        var codeBlock = btn.closest('.code-block');
+        var pre = codeBlock.querySelector('pre');
+        var text = pre.textContent;
+        navigator.clipboard.writeText(text).then(function () {
+            if (window.mcToast) {
+                mcToast('Copied to clipboard', 'success');
+            }
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+        }).catch(function () {
+            // Fallback
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (window.mcToast) {
+                mcToast('Copied to clipboard', 'success');
+            }
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+        });
+    };
+
+    // ── Run code from inline examples ──
+    window.runCode = function (code, btn) {
+        var codeBlock = btn.closest('.code-block');
+        var resultEl = codeBlock.nextElementSibling;
+        while (resultEl && !resultEl.classList.contains('inline-result')) {
+            resultEl = resultEl.nextElementSibling;
+        }
+
+        try {
+            var result = eval(code);
+            var output = JSON.stringify(result, null, 2);
+            if (resultEl) {
+                resultEl.textContent = output;
+                resultEl.classList.remove('error');
+                resultEl.classList.add('visible');
+            }
+            // Also update the right panel
+            var consoleOutput = document.getElementById('console-output');
+            if (consoleOutput) {
+                consoleOutput.textContent = '> ' + code + '\n\n' + output;
+                consoleOutput.classList.remove('error');
+            }
+        } catch (err) {
+            if (resultEl) {
+                resultEl.textContent = 'Error: ' + err.message;
+                resultEl.classList.add('error', 'visible');
+            }
+        }
+
+        // Button feedback
+        var originalText = btn.textContent;
+        btn.textContent = 'Done!';
+        btn.style.background = '#22c55e';
+        setTimeout(function () {
+            btn.textContent = originalText;
+            btn.style.background = '';
+        }, 1200);
+    };
+
+    // ── Live Console: Run ──
+    window.runConsole = function () {
+        var input = document.getElementById('console-input');
+        var output = document.getElementById('console-output');
+        var code = input.value.trim();
+        if (!code) return;
+
+        try {
+            var result = eval(code);
+            var formatted = JSON.stringify(result, null, 2);
+            output.textContent = '> ' + code + '\n\n' + formatted;
+            output.classList.remove('error');
+        } catch (err) {
+            output.textContent = '> ' + code + '\n\nError: ' + err.message;
+            output.classList.add('error');
+        }
+    };
+
+    // ── Live Console: Clear ──
+    window.clearConsole = function () {
+        var output = document.getElementById('console-output');
+        output.textContent = '';
+        output.classList.remove('error');
+    };
+
+    // ── Quick Run: Set input and execute ──
+    window.quickRun = function (code) {
+        var input = document.getElementById('console-input');
+        input.value = code;
+        runConsole();
+    };
+
+    // ── Allow Ctrl+Enter to run in console ──
+    var consoleInput = document.getElementById('console-input');
+    if (consoleInput) {
+        consoleInput.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runConsole();
+            }
+        });
+    }
+
+    // ── Scroll to hash on load ──
+    if (window.location.hash) {
+        var hashId = window.location.hash.slice(1);
+        setTimeout(function () {
+            var el = document.getElementById(hashId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
+
+})();
+</script>
+</body>
+</html>

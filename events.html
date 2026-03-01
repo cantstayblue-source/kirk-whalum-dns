@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Shows | Kirk Whalum</title>
+    <meta name="description" content="See Kirk Whalum live! Upcoming concerts, jazz festivals, and special performances. Get tickets and tour dates.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <a href="website.html" class="nav-logo">Kirk Whalum</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="music.html">Music</a>
+            <a href="events.html" class="active">Events</a>
+            <a href="ministry.html">Ministry</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="contact.html" class="btn nav-cta">Book Kirk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="music.html">Music</a>
+        <a href="events.html">Events</a>
+        <a href="ministry.html">Ministry</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="section-label">Live Performances</div>
+        <h1>Shows & Events</h1>
+        <p>Experience the saxophone legend live in concert</p>
+    </div>
+
+    <!-- Upcoming Shows -->
+    <section class="section section-card">
+        <div class="section-header">
+            <div class="section-label">On Tour</div>
+            <h2>Upcoming Shows</h2>
+            <p>Don't miss Kirk Whalum live</p>
+        </div>
+        <div class="shows-list">
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">12</div>
+                    <div class="month">Mar</div>
+                </div>
+                <div class="show-details">
+                    <h4>Lounge at City Winery</h4>
+                    <p>Nashville, TN</p>
+                </div>
+                <a href="#" class="show-cta">Get Tickets</a>
+            </div>
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">--</div>
+                    <div class="month">TBD</div>
+                </div>
+                <div class="show-details">
+                    <h4>Crosstown Theater</h4>
+                    <p>Memphis, TN — Homecoming Show</p>
+                </div>
+                <a href="#" class="show-cta">Coming Soon</a>
+            </div>
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">--</div>
+                    <div class="month">TBD</div>
+                </div>
+                <div class="show-details">
+                    <h4>Blue Note NYC</h4>
+                    <p>New York, NY</p>
+                </div>
+                <a href="#" class="show-cta">Coming Soon</a>
+            </div>
+            <div class="show-item fade-in">
+                <div class="show-date">
+                    <div class="day">--</div>
+                    <div class="month">TBD</div>
+                </div>
+                <div class="show-details">
+                    <h4>Chandler Center for the Arts</h4>
+                    <p>Chandler, AZ</p>
+                </div>
+                <a href="#" class="show-cta">Coming Soon</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Types -->
+    <section class="section section-dark">
+        <div class="section-header">
+            <div class="section-label">Bookings</div>
+            <h2>Types of Events</h2>
+            <p>Kirk is available for a variety of performances</p>
+        </div>
+        <div class="ministry-grid">
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#127927;</div>
+                <h3>Concert Performances</h3>
+                <p>Full-band concert experiences featuring Kirk's greatest hits alongside new material from Epic Cool. Perfect for jazz clubs, theaters, and outdoor venues.</p>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#127960;&#65039;</div>
+                <h3>Corporate Events</h3>
+                <p>Sophisticated live entertainment for galas, conferences, product launches, and private functions. Kirk creates an unforgettable atmosphere for any corporate occasion.</p>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#9968;&#65039;</div>
+                <h3>Worship & Ministry</h3>
+                <p>Kirk brings his unique blend of jazz and gospel to churches, conferences, and faith-based events. Music as worship, healing as purpose.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter + Booking CTA -->
+    <section class="email-section">
+        <h2>Don't Miss a Show</h2>
+        <p>Sign up for Kirk's newsletter to get early access to tickets, exclusive pre-sales, and tour announcements.</p>
+        <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\'re In!'; setTimeout(() => this.querySelector('button').textContent='Notify Me', 3000);">
+            <input type="email" placeholder="Enter your email for tour alerts" required>
+            <button type="submit">Notify Me</button>
+        </form>
+        <div style="margin-top: 40px;">
+            <a href="contact.html" class="btn btn-outline-gold">Book Kirk for Your Event</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Kirk Whalum</div>
+                <p>Grammy-nominated saxophonist bringing soul, spirit, and jazz to audiences worldwide for over 40 years.</p>
+                <div class="social-links-footer">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                    <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                    <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="about.html">About Kirk</a>
+                <a href="music.html">Music</a>
+                <a href="events.html">Events</a>
+                <a href="ministry.html">Ministry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="contact.html">Book Kirk</a>
+                <a href="contact.html">Press Kit</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Listen</h4>
+                <a href="#">Spotify</a>
+                <a href="#">Apple Music</a>
+                <a href="#">YouTube Music</a>
+                <a href="#">Amazon Music</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kirk Whalum. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Booking | Kirk Whalum</title>
+    <meta name="description" content="Book Kirk Whalum for your event. Contact for concerts, corporate events, worship services, and press inquiries.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <a href="website.html" class="nav-logo">Kirk Whalum</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="music.html">Music</a>
+            <a href="events.html">Events</a>
+            <a href="ministry.html">Ministry</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
+        <a href="contact.html" class="btn nav-cta">Book Kirk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="music.html">Music</a>
+        <a href="events.html">Events</a>
+        <a href="ministry.html">Ministry</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="section-label">Get in Touch</div>
+        <h1>Contact & Booking</h1>
+        <p>Let's make something beautiful together</p>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="section section-dark">
+        <div class="contact-grid">
+            <div class="contact-info fade-in">
+                <h3>Let's Connect</h3>
+                <p>Whether you're looking to book Kirk for a concert, corporate event, worship service, or studio session — or you have press inquiries — we'd love to hear from you.</p>
+
+                <div class="contact-detail">
+                    <div class="contact-detail-icon">&#127927;</div>
+                    <div class="contact-detail-text">
+                        <h4>Booking Inquiries</h4>
+                        <p>For concert and event bookings</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-detail-icon">&#128240;</div>
+                    <div class="contact-detail-text">
+                        <h4>Press & Media</h4>
+                        <p>Interviews, features, and press kits</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-detail-icon">&#10013;&#65039;</div>
+                    <div class="contact-detail-text">
+                        <h4>Ministry & Speaking</h4>
+                        <p>Worship services and conferences</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <div class="contact-detail-icon">&#127911;</div>
+                    <div class="contact-detail-text">
+                        <h4>Studio Sessions</h4>
+                        <p>Collaboration and session work</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Follow Kirk</h3>
+                    <div class="social-links-footer">
+                        <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                        <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                        <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                        <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form fade-in">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.35rem; margin-bottom: 24px;">Send a Message</h3>
+                <form onsubmit="event.preventDefault(); this.querySelector('.submit-btn').textContent='Message Sent!'; setTimeout(() => this.querySelector('.submit-btn').textContent='Send Message', 3000);">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inquiry">Inquiry Type</label>
+                        <select id="inquiry">
+                            <option value="">Select an option</option>
+                            <option value="booking">Concert / Event Booking</option>
+                            <option value="corporate">Corporate Event</option>
+                            <option value="ministry">Ministry / Worship</option>
+                            <option value="press">Press / Media</option>
+                            <option value="studio">Studio Session</option>
+                            <option value="other">General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Tell us about your event, project, or inquiry..." rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn" style="width: 100%; justify-content: center;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press Kit CTA -->
+    <section class="section section-card" style="text-align: center;">
+        <div class="section-header">
+            <div class="section-label">For Media</div>
+            <h2>Press Kit</h2>
+            <p>Download Kirk Whalum's electronic press kit for your publication or event</p>
+        </div>
+        <div class="ministry-grid" style="max-width: 800px; margin: 0 auto; grid-template-columns: 1fr 1fr;">
+            <div class="ministry-card fade-in" style="text-align: center;">
+                <div class="ministry-icon" style="margin: 0 auto 16px;">&#128248;</div>
+                <h3 style="font-size: 1rem;">Photos & Bio</h3>
+                <p>High-resolution press photos and official biography for media use.</p>
+            </div>
+            <div class="ministry-card fade-in" style="text-align: center;">
+                <div class="ministry-icon" style="margin: 0 auto 16px;">&#128196;</div>
+                <h3 style="font-size: 1rem;">Technical Rider</h3>
+                <p>Stage requirements, sound specifications, and hospitality details for venues.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Kirk Whalum</div>
+                <p>Grammy-nominated saxophonist bringing soul, spirit, and jazz to audiences worldwide for over 40 years.</p>
+                <div class="social-links-footer">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                    <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                    <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="about.html">About Kirk</a>
+                <a href="music.html">Music</a>
+                <a href="events.html">Events</a>
+                <a href="ministry.html">Ministry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="contact.html">Book Kirk</a>
+                <a href="contact.html">Press Kit</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Listen</h4>
+                <a href="#">Spotify</a>
+                <a href="#">Apple Music</a>
+                <a href="#">YouTube Music</a>
+                <a href="#">Amazon Music</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kirk Whalum. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -5,639 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kirk Whalum | Grammy-Nominated Saxophonist</title>
     <meta name="description" content="Grammy-nominated saxophonist Kirk Whalum - Music, Ministry, and Message. Listen to Epic Cool, join the Couragement campaign, or book for your event.">
-    
-    <!-- Fonts -->
+    <meta property="og:title" content="Kirk Whalum | Where Soul Meets Spirit">
+    <meta property="og:description" content="Grammy-nominated saxophonist. 40+ years of music, ministry, and message.">
+    <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --bg-elevated: #1a1a1a;
-            --accent: #c9a227;
-            --accent-light: #dbb94a;
-            --accent-dark: #8a6d15;
-            --text: #ffffff;
-            --text-dim: #a0a0a0;
-            --text-muted: #666666;
-            --gradient-gold: linear-gradient(135deg, #c9a227 0%, #dbb94a 50%, #c9a227 100%);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html { scroll-behavior: smooth; }
-        
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        /* Typography */
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-        }
-        
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover { color: var(--accent); }
-        
-        .nav-cta {
-            padding: 10px 24px;
-            background: var(--gradient-gold);
-            border: none;
-            border-radius: 30px;
-            color: #000;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(201, 162, 39, 0.3);
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 120px 40px 80px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 30% 20%, rgba(201, 162, 39, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(201, 162, 39, 0.1) 0%, transparent 40%);
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            max-width: 700px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(201, 162, 39, 0.1);
-            border: 1px solid rgba(201, 162, 39, 0.3);
-            border-radius: 30px;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 24px;
-        }
-        
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #fff 0%, #c9a227 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--text-dim);
-            margin-bottom: 16px;
-            max-width: 500px;
-        }
-        
-        .hero-description {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            max-width: 500px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        
-        .btn-primary {
-            padding: 16px 32px;
-            background: var(--gradient-gold);
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(201, 162, 39, 0.4);
-        }
-        
-        .btn-secondary {
-            padding: 16px 32px;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            color: var(--text);
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            gap: 60px;
-            padding: 40px;
-            background: var(--bg-card);
-            border-top: 1px solid rgba(201, 162, 39, 0.1);
-            border-bottom: 1px solid rgba(201, 162, 39, 0.1);
-        }
-        
-        .stat-item { text-align: center; }
-        .stat-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .stat-label { font-size: 0.85rem; color: var(--text-muted); }
-        
-        /* Email Capture */
-        .email-section {
-            padding: 100px 40px;
-            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-            text-align: center;
-        }
-        
-        .email-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-        }
-        
-        .email-section p {
-            color: var(--text-dim);
-            max-width: 500px;
-            margin: 0 auto 32px;
-        }
-        
-        .email-form {
-            display: flex;
-            gap: 12px;
-            max-width: 450px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .email-form input {
-            flex: 1;
-            min-width: 250px;
-            padding: 16px 24px;
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-        }
-        
-        .email-form input::placeholder { color: var(--text-muted); }
-        
-        .email-form input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        
-        .email-form button {
-            padding: 16px 32px;
-            background: var(--gradient-gold);
-            border: none;
-            border-radius: 8px;
-            color: #000;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        
-        /* Latest Release */
-        .latest-release {
-            padding: 100px 40px;
-            background: var(--bg-card);
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-header h2 {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-        }
-        
-        .section-header p {
-            color: var(--text-dim);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .release-card {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            background: var(--bg-elevated);
-            border-radius: 24px;
-            overflow: hidden;
-        }
-        
-        .release-cover {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8rem;
-            position: relative;
-        }
-        
-        .release-cover::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(201,162,39,0.2), transparent);
-        }
-        
-        .release-info { padding: 40px; }
-        
-        .release-label {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(201, 162, 39, 0.2);
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
-            margin-bottom: 16px;
-        }
-        
-        .release-info h3 {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-        
-        .release-info .description {
-            color: var(--text-dim);
-            margin-bottom: 24px;
-        }
-        
-        .track-list {
-            list-style: none;
-            margin-bottom: 32px;
-        }
-        
-        .track-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-dim);
-        }
-        
-        .track-list li span:first-child { color: var(--text); }
-        
-        .release-buttons {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        /* Ministry Section */
-        .ministry {
-            padding: 100px 40px;
-            background: var(--bg-dark);
-        }
-        
-        .ministry-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .ministry-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 32px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s;
-        }
-        
-        .ministry-card:hover {
-            border-color: rgba(201, 162, 39, 0.3);
-            transform: translateY(-4px);
-        }
-        
-        .ministry-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .ministry-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 12px;
-        }
-        
-        .ministry-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        
-        /* Shows Section */
-        .shows {
-            padding: 100px 40px;
-            background: var(--bg-card);
-        }
-        
-        .shows-list {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .show-item {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            padding: 24px;
-            background: var(--bg-elevated);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: all 0.3s;
-        }
-        
-        .show-item:hover {
-            border-left: 3px solid var(--accent);
-        }
-        
-        .show-date {
-            text-align: center;
-            min-width: 60px;
-            padding: 12px;
-            background: var(--accent);
-            border-radius: 8px;
-            color: #000;
-        }
-        
-        .show-date .day { font-size: 1.5rem; font-weight: 700; line-height: 1; }
-        .show-date .month { font-size: 0.7rem; text-transform: uppercase; font-weight: 600; }
-        
-        .show-details { flex: 1; }
-        .show-details h4 { font-size: 1.1rem; margin-bottom: 4px; }
-        .show-details p { color: var(--text-muted); font-size: 0.9rem; }
-        
-        .show-cta {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .show-cta:hover {
-            background: var(--accent);
-            color: #000;
-        }
-        
-        /* Merch Section */
-        .merch {
-            padding: 100px 40px;
-            background: var(--bg-dark);
-        }
-        
-        .merch-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .merch-item {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        
-        .merch-item:hover { transform: translateY(-4px); }
-        
-        .merch-image {
-            aspect-ratio: 1;
-            background: var(--bg-elevated);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-        }
-        
-        .merch-info { padding: 20px; }
-        .merch-info h4 { font-size: 1rem; margin-bottom: 4px; }
-        .merch-info .price { color: var(--accent); font-weight: 600; }
-        
-        /* Footer */
-        footer {
-            padding: 60px 40px;
-            background: var(--bg-card);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-        }
-        
-        .footer-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: var(--accent);
-            margin-bottom: 24px;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        
-        .social-links a {
-            width: 44px;
-            height: 44px;
-            background: var(--bg-elevated);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: var(--accent);
-            color: #000;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
-        }
-        
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .footer-links a:hover { color: var(--accent); }
-        
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-        
-        /* Responsive */
-        @media (max-width: 968px) {
-            .release-card { grid-template-columns: 1fr; }
-            .ministry-grid { grid-template-columns: 1fr; }
-            .merch-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-bar { flex-wrap: wrap; gap: 40px; justify-content: center; }
-        }
-        
-        @media (max-width: 768px) {
-            nav { padding: 16px 20px; }
-            .nav-links { display: none; }
-            .hero { padding: 100px 20px 60px; }
-            .hero h1 { font-size: 2.5rem; }
-            .email-section, .latest-release, .ministry, .shows, .merch { padding: 60px 20px; }
-            .merch-grid { grid-template-columns: 1fr; }
-            .show-item { flex-direction: column; text-align: center; }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation -->
-    <nav>
-        <a href="#" class="nav-logo">KW</a>
-        <ul class="nav-links">
-            <li><a href="#music">Music</a></li>
-            <li><a href="#ministry">Ministry</a></li>
-            <li><a href="#shows">Shows</a></li>
-            <li><a href="#merch">Merch</a></li>
-        </ul>
-        <button class="nav-cta" onclick="document.getElementById('email').scrollIntoView({behavior: 'smooth'})">
-            Join the Movement
+    <nav class="nav" id="navbar">
+        <a href="website.html" class="nav-logo">Kirk Whalum</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="music.html">Music</a>
+            <a href="events.html">Events</a>
+            <a href="ministry.html">Ministry</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="contact.html" class="btn nav-cta">Book Kirk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
         </button>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="music.html">Music</a>
+        <a href="events.html">Events</a>
+        <a href="ministry.html">Ministry</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <div class="hero-badge">
-                <span>🎷</span> Grammy-Nominated Saxophonist
+                <span>&#127927;</span> Grammy-Nominated Saxophonist
             </div>
             <h1>Where Soul Meets Spirit</h1>
             <p class="hero-subtitle">Memphis-born. Ministry-minded. Still blowing minds after 40 years.</p>
-            <p class="hero-description">From playing with Whitney Houston to leading worship, Kirk Whalum brings the same passion to every note—music that moves your body and transforms your soul.</p>
+            <p class="hero-description">From playing with Whitney Houston to leading worship, Kirk Whalum brings the same passion to every note — music that moves your body and transforms your soul.</p>
             <div class="hero-buttons">
-                <a href="#music" class="btn-primary">
-                    🎵 Listen to Epic Cool
+                <a href="music.html" class="btn btn-primary">
+                    &#127925; Listen to Epic Cool
                 </a>
-                <a href="#email" class="btn-secondary">
-                    ✉️ Get Free Sax Tips
+                <a href="#email" class="btn btn-secondary">
+                    &#9993;&#65039; Join the Movement
                 </a>
             </div>
         </div>
@@ -645,96 +62,101 @@
 
     <!-- Stats Bar -->
     <div class="stats-bar">
-        <div class="stat-item">
+        <div class="stat-item fade-in">
             <div class="stat-number">40+</div>
             <div class="stat-label">Years of Music</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item fade-in">
             <div class="stat-number">15+</div>
             <div class="stat-label">Studio Albums</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item fade-in">
             <div class="stat-number">338K</div>
             <div class="stat-label">Social Followers</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item fade-in">
             <div class="stat-number">1M+</div>
-            <div class="stat-label">Streams</div>
+            <div class="stat-label">Monthly Streams</div>
         </div>
     </div>
 
     <!-- Email Capture -->
     <section class="email-section" id="email">
-        <h2>Join the Couragement Campaign</h2>
-        <p>Get daily inspiration, exclusive sax tips, and behind-the-scenes content delivered to your inbox. No spam—just soul.</p>
-        <form class="email-form" onsubmit="event.preventDefault(); alert('Thanks for joining! Check your email to confirm.');">
-            <input type="email" placeholder="Enter your email" required>
+        <div class="section-label">Join the Family</div>
+        <h2>The Couragement Campaign</h2>
+        <p>Get daily inspiration, exclusive sax tips, and behind-the-scenes content delivered to your inbox. No spam — just soul.</p>
+        <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Welcome!'; setTimeout(() => this.querySelector('button').textContent='Join Free', 3000);">
+            <input type="email" placeholder="Enter your email address" required>
             <button type="submit">Join Free</button>
         </form>
-        <p style="margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">🎷 Join 2,000+ sax lovers and faith seekers</p>
+        <p class="email-note">&#127927; Join 2,000+ sax lovers and faith seekers</p>
     </section>
 
-    <!-- Latest Release -->
-    <section class="latest-release" id="music">
+    <!-- Featured Release -->
+    <section class="section section-card" id="music">
         <div class="section-header">
+            <div class="section-label">New Music</div>
             <h2>Latest Release</h2>
             <p>Epic Cool — Where jazz meets soul and spirit</p>
         </div>
-        <div class="release-card">
-            <div class="release-cover">
-                🎷
-            </div>
+        <div class="featured-release fade-in">
+            <div class="release-cover">&#127927;</div>
             <div class="release-info">
-                <span class="release-label">New Album</span>
+                <span class="release-label">New Album 2025</span>
                 <h3>Epic Cool</h3>
-                <p class="description">Produced by Greg Manning (Keb' Mo', Herb Alpert), Epic Cool features 12 tracks of soulful, danceable jazz with Kirk's signature saxophone sound.</p>
+                <p>Produced by Greg Manning (Keb' Mo', Herb Alpert), Epic Cool features 12 tracks of soulful, danceable jazz with Kirk's signature saxophone sound.</p>
                 <ul class="track-list">
                     <li><span>Bah-De-Yah!</span><span>4:12</span></li>
                     <li><span>Pillow Talk</span><span>5:03</span></li>
                     <li><span>Epic Cool</span><span>4:45</span></li>
                     <li><span>Grace</span><span>4:28</span></li>
                 </ul>
-                <div class="release-buttons">
-                    <a href="#" class="btn-primary">🎧 Stream Now</a>
-                    <a href="#" class="btn-secondary">💿 Buy CD</a>
+                <div class="release-links">
+                    <a href="#" class="btn btn-primary">&#127911; Stream Now</a>
+                    <a href="music.html" class="btn btn-secondary">View All Music</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Ministry Section -->
-    <section class="ministry" id="ministry">
+    <!-- Ministry Preview -->
+    <section class="section section-dark" id="ministry">
         <div class="section-header">
+            <div class="section-label">Faith & Purpose</div>
             <h2>Ministry & Mission</h2>
             <p>Music is my ministry. Every note is a prayer.</p>
         </div>
         <div class="ministry-grid">
-            <div class="ministry-card">
-                <div class="ministry-icon">📖</div>
-                <h3>Bible In Your Ear (BIYE)</h3>
-                <p>Daily 15-minute podcast reading through the Bible in a year. Join thousands on this transformative journey.</p>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#128214;</div>
+                <h3>Bible In Your Ear</h3>
+                <p>Daily 15-minute podcast reading through the Bible in a year. Join thousands on this transformative journey through scripture.</p>
             </div>
-            <div class="ministry-card">
-                <div class="ministry-icon">🎓</div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#127891;</div>
                 <h3>Music Professor</h3>
-                <p>Teaching the next generation at Visible Music College in Memphis. Passing on 40 years of wisdom.</p>
+                <p>Teaching the next generation at Visible Music College in Memphis. Passing on 40 years of wisdom and musical excellence.</p>
             </div>
-            <div class="ministry-card">
-                <div class="ministry-icon">✝️</div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#10013;&#65039;</div>
                 <h3>Ordained Minister</h3>
-                <p>Masters of Art in Religion. Bringing faith and music together for healing and transformation.</p>
+                <p>Masters of Art in Religion. Bringing faith and music together for healing, transformation, and spiritual growth.</p>
             </div>
+        </div>
+        <div style="text-align: center; margin-top: 48px;">
+            <a href="ministry.html" class="btn btn-outline-gold">Learn More About Kirk's Ministry</a>
         </div>
     </section>
 
-    <!-- Shows Section -->
-    <section class="shows" id="shows">
+    <!-- Upcoming Shows Preview -->
+    <section class="section section-card" id="shows">
         <div class="section-header">
-            <h2>Live Shows</h2>
+            <div class="section-label">Live Performances</div>
+            <h2>Upcoming Shows</h2>
             <p>Experience the saxophone legend live</p>
         </div>
         <div class="shows-list">
-            <div class="show-item">
+            <div class="show-item fade-in">
                 <div class="show-date">
                     <div class="day">12</div>
                     <div class="month">Mar</div>
@@ -745,7 +167,7 @@
                 </div>
                 <a href="#" class="show-cta">Get Tickets</a>
             </div>
-            <div class="show-item">
+            <div class="show-item fade-in">
                 <div class="show-date">
                     <div class="day">--</div>
                     <div class="month">TBD</div>
@@ -756,7 +178,7 @@
                 </div>
                 <a href="#" class="show-cta">Coming Soon</a>
             </div>
-            <div class="show-item">
+            <div class="show-item fade-in">
                 <div class="show-date">
                     <div class="day">--</div>
                     <div class="month">TBD</div>
@@ -767,74 +189,56 @@
                 </div>
                 <a href="#" class="show-cta">Coming Soon</a>
             </div>
-            <div class="show-item">
-                <div class="show-date">
-                    <div class="day">--</div>
-                    <div class="month">TBD</div>
-                </div>
-                <div class="show-details">
-                    <h4>Chandler Center for the Arts</h4>
-                    <p>Chandler, AZ</p>
-                </div>
-                <a href="#" class="show-cta">Coming Soon</a>
-            </div>
         </div>
-    </section>
-
-    <!-- Merch Section -->
-    <section class="merch" id="merch">
-        <div class="section-header">
-            <h2>Official Merch</h2>
-            <p>Wear the soul</p>
-        </div>
-        <div class="merch-grid">
-            <div class="merch-item">
-                <div class="merch-image">🧢</div>
-                <div class="merch-info">
-                    <h4>Epic Cool Cap</h4>
-                    <span class="price">$35.00</span>
-                </div>
-            </div>
-            <div class="merch-item">
-                <div class="merch-image">👕</div>
-                <div class="merch-info">
-                    <h4>Signature T-Shirt</h4>
-                    <span class="price">$30.00</span>
-                </div>
-            </div>
-            <div class="merch-item">
-                <div class="merch-image">🎵</div>
-                <div class="merch-info">
-                    <h4>Epic Cool CD</h4>
-                    <span class="price">$14.99</span>
-                </div>
-            </div>
-            <div class="merch-item">
-                <div class="merch-image">💿</div>
-                <div class="merch-info">
-                    <h4>Greatest Hits</h4>
-                    <span class="price">$14.99</span>
-                </div>
-            </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="events.html" class="btn btn-outline-gold">View All Shows</a>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-logo">Kirk Whalum</div>
-        <div class="social-links">
-            <a href="https://instagram.com/kirkwhalum" target="_blank">📸</a>
-            <a href="https://facebook.com/KirkWhalum" target="_blank">📘</a>
-            <a href="https://youtube.com/@kirkwhalum" target="_blank">▶️</a>
-            <a href="https://tiktok.com/@kirkwhalum" target="_blank">🎵</a>
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Kirk Whalum</div>
+                <p>Grammy-nominated saxophonist bringing soul, spirit, and jazz to audiences worldwide for over 40 years.</p>
+                <div class="social-links-footer">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                    <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                    <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="about.html">About Kirk</a>
+                <a href="music.html">Music</a>
+                <a href="events.html">Events</a>
+                <a href="ministry.html">Ministry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="contact.html">Book Kirk</a>
+                <a href="contact.html">Press Kit</a>
+                <a href="contact.html">Contact</a>
+                <a href="#email">Newsletter</a>
+            </div>
+            <div class="footer-col">
+                <h4>Listen</h4>
+                <a href="#">Spotify</a>
+                <a href="#">Apple Music</a>
+                <a href="#">YouTube Music</a>
+                <a href="#">Amazon Music</a>
+            </div>
         </div>
-        <div class="footer-links">
-            <a href="#">Press Kit</a>
-            <a href="#">Booking</a>
-            <a href="#">Contact</a>
-            <a href="#">Privacy</a>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kirk Whalum. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
         </div>
-        <p class="copyright">© 2026 Kirk Whalum. All rights reserved.</p>
     </footer>
+
+    <script src="main.js"></script>
 </body>
 </html>

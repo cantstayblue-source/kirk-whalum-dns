@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/mc/">
+    <title>Funnels - Kirk Whalum Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mc-styles.css">
+</head>
+<body>
+    <button class="mc-mobile-toggle" aria-label="Toggle menu">&#9776;</button>
+    <div class="mc-layout">
+        <aside class="mc-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">&#127927;</div>
+                <div class="sidebar-brand">
+                    <h1>Kirk Whalum</h1>
+                    <span>Mission Control</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="sidebar-link"><span class="icon">&#128202;</span><span class="label">Dashboard</span></a>
+                <a href="content.html" class="sidebar-link"><span class="icon">&#128249;</span><span class="label">Content</span></a>
+                <a href="shows.html" class="sidebar-link"><span class="icon">&#127908;</span><span class="label">Shows</span></a>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Business</div>
+                <a href="funnels.html" class="sidebar-link active"><span class="icon">&#127919;</span><span class="label">Funnels</span></a>
+                <a href="crm.html" class="sidebar-link"><span class="icon">&#128101;</span><span class="label">CRM</span></a>
+                <a href="tasks.html" class="sidebar-link"><span class="icon">&#9889;</span><span class="label">Tasks</span></a>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">System</div>
+                <a href="settings.html" class="sidebar-link"><span class="icon">&#9881;</span><span class="label">Settings</span></a>
+                <a href="api-docs.html" class="sidebar-link"><span class="icon">&#128218;</span><span class="label">API Docs</span></a>
+                <div class="sidebar-divider"></div>
+                <a href="../website.html" class="sidebar-link"><span class="icon">&#127760;</span><span class="label">Public Site</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="ai-badge"><span class="dot"></span> <span>Valarnette Active</span></div>
+                <button class="theme-toggle" id="theme-toggle-btn" onclick="mcToggleTheme()">
+                    <span class="toggle-icon">&#9728;&#65039;</span> Light Mode
+                </button>
+            </div>
+        </aside>
+        <div class="mc-sidebar-overlay"></div>
+        <main class="mc-main">
+            <!-- Header -->
+            <div class="mc-header">
+                <div>
+                    <h2>Funnel Planning</h2>
+                    <p>Revenue funnels, products, and campaign management</p>
+                </div>
+                <div class="mc-header-actions">
+                    <button class="btn btn-outline btn-sm" onclick="scrollToSection('products-section')">Products</button>
+                    <button class="btn btn-outline btn-sm" onclick="scrollToSection('campaigns-section')">Campaigns</button>
+                </div>
+            </div>
+
+            <div class="mc-body">
+                <!-- Funnel Metrics -->
+                <div class="metrics-row" id="funnel-metrics"></div>
+
+                <!-- Funnel Type Tabs -->
+                <div class="mc-tabs" id="funnel-tabs"></div>
+
+                <!-- Funnel Tab Contents -->
+                <div id="funnel-tab-contents"></div>
+
+                <!-- Product Catalog Section -->
+                <div id="products-section" class="mt-3">
+                    <div class="mc-card">
+                        <div class="mc-card-header">
+                            <h3>Product Catalog</h3>
+                            <span class="text-xs text-dim" id="product-count"></span>
+                        </div>
+                        <div class="mc-card-body">
+                            <div class="grid-3" id="products-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaign Manager Section -->
+                <div id="campaigns-section" class="mt-3">
+                    <div class="mc-card">
+                        <div class="mc-card-header">
+                            <h3>Campaign Manager</h3>
+                            <button class="btn btn-primary btn-sm" onclick="mcOpenModal('campaign')">+ Add Campaign</button>
+                        </div>
+                        <div class="mc-card-body">
+                            <div id="campaigns-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Modal -->
+            <div class="mc-modal-overlay" id="modal-campaign">
+                <div class="mc-modal">
+                    <div class="mc-modal-header">
+                        <h3 id="campaign-modal-title">Add Campaign</h3>
+                        <button class="mc-modal-close" onclick="mcCloseModal('campaign')">&times;</button>
+                    </div>
+                    <div class="mc-modal-body">
+                        <input type="hidden" id="campaign-edit-id">
+                        <div class="form-group">
+                            <label>Campaign Name</label>
+                            <input type="text" class="form-control" id="campaign-name" placeholder="e.g. Summer Tour Push">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea class="form-control" id="campaign-desc" placeholder="Campaign objective and strategy..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" id="campaign-start">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" class="form-control" id="campaign-end">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Goal</label>
+                            <input type="text" class="form-control" id="campaign-goal" placeholder="e.g. 500 signups, $10K revenue">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" id="campaign-status">
+                                <option value="planning">Planning</option>
+                                <option value="active">Active</option>
+                                <option value="paused">Paused</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mc-modal-footer">
+                        <button class="btn btn-outline" onclick="mcCloseModal('campaign')">Cancel</button>
+                        <button class="btn btn-primary" onclick="saveCampaign()">Save Campaign</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funnel Detail Modal -->
+            <div class="mc-modal-overlay" id="modal-funnel-detail">
+                <div class="mc-modal">
+                    <div class="mc-modal-header">
+                        <h3 id="funnel-detail-title">Funnel Details</h3>
+                        <button class="mc-modal-close" onclick="mcCloseModal('funnel-detail')">&times;</button>
+                    </div>
+                    <div class="mc-modal-body" id="funnel-detail-body"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="mc-data.js"></script>
+    <script src="mc-api.js"></script>
+    <script src="mc-app.js"></script>
+    <script>
+    (function() {
+        'use strict';
+
+        const FUNNEL_TYPE_MAP = {
+            'bootcamp': { label: 'Bootcamp', icon: '&#127891;', color: 'info' },
+            'webinar':  { label: 'Webinar',  icon: '&#127909;', color: 'purple' },
+            'paid-traffic': { label: 'Paid Traffic', icon: '&#128176;', color: 'warning' },
+            'content':  { label: 'Content',  icon: '&#128221;', color: 'success' }
+        };
+
+        const STAGE_ICONS = {
+            'top':    { icon: '&#127759;', label: 'Awareness' },
+            'middle': { icon: '&#128161;', label: 'Nurture' },
+            'bottom': { icon: '&#128178;', label: 'Convert' }
+        };
+
+        const TIER_BADGES = {
+            'low':     { class: 'badge-planned', label: 'Entry' },
+            'mid':     { class: 'badge-draft', label: 'Mid-Tier' },
+            'high':    { class: 'badge-published', label: 'High-Ticket' },
+            'premium': { class: 'badge-analyzing', label: 'Premium' }
+        };
+
+        // ---- Render Top Metrics ----
+        function renderMetrics() {
+            const funnels = mcStore.getAll('funnels');
+            const products = mcStore.getAll('products');
+            const campaigns = mcStore.getAll('campaigns');
+            const totalGoal = funnels.reduce((s, f) => s + (f.revenueGoal || 0), 0);
+            const totalActual = funnels.reduce((s, f) => s + (f.revenueActual || 0), 0);
+
+            document.getElementById('funnel-metrics').innerHTML = `
+                <div class="metric-card">
+                    <div class="value">${funnels.length}</div>
+                    <div class="label">Active Funnels</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">${products.length}</div>
+                    <div class="label">Products</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">${campaigns.length}</div>
+                    <div class="label">Campaigns</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">$${totalGoal.toLocaleString()}</div>
+                    <div class="label">Revenue Goal</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">$${totalActual.toLocaleString()}</div>
+                    <div class="label">Revenue Actual</div>
+                </div>
+            `;
+        }
+
+        // ---- Render Funnel Tabs ----
+        function renderFunnelTabs() {
+            const funnels = mcStore.getAll('funnels');
+            const tabsEl = document.getElementById('funnel-tabs');
+            const contentsEl = document.getElementById('funnel-tab-contents');
+
+            let tabsHTML = '';
+            let contentsHTML = '';
+
+            funnels.forEach((funnel, idx) => {
+                const meta = FUNNEL_TYPE_MAP[funnel.type] || { label: funnel.type, icon: '&#128203;', color: 'info' };
+                const activeClass = idx === 0 ? 'active' : '';
+
+                tabsHTML += `<button class="mc-tab ${activeClass}" data-tab="funnel-${funnel.id}">${meta.label}</button>`;
+                contentsHTML += `
+                    <div class="mc-tab-content ${activeClass}" id="funnel-${funnel.id}">
+                        ${renderFunnelView(funnel, meta)}
+                    </div>
+                `;
+            });
+
+            tabsEl.innerHTML = tabsHTML;
+            contentsEl.innerHTML = contentsHTML;
+
+            // Re-bind tab clicks
+            tabsEl.querySelectorAll('.mc-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    tabsEl.querySelectorAll('.mc-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    contentsEl.querySelectorAll('.mc-tab-content').forEach(c => c.classList.remove('active'));
+                    const targetEl = document.getElementById(target);
+                    if (targetEl) targetEl.classList.add('active');
+                });
+            });
+        }
+
+        // ---- Render Single Funnel View ----
+        function renderFunnelView(funnel, meta) {
+            const pct = funnel.revenueGoal > 0 ? Math.min(100, Math.round((funnel.revenueActual / funnel.revenueGoal) * 100)) : 0;
+            const product = funnel.product || {};
+            const tier = TIER_BADGES[product.tier] || TIER_BADGES['mid'];
+
+            let stagesHTML = '';
+            (funnel.stages || []).forEach((stage, sIdx) => {
+                const sIcon = STAGE_ICONS[stage.type] || STAGE_ICONS['top'];
+                const taskList = (stage.tasks || []).map((task, tIdx) => {
+                    const checked = stage._completed && stage._completed[tIdx] ? 'checked' : '';
+                    return `
+                        <div class="checkbox-item ${checked}" onclick="toggleStageTask('${funnel.id}', ${sIdx}, ${tIdx}, this)">
+                            <div class="checkbox-box">&#10003;</div>
+                            <span class="checkbox-label">${task}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const metricsHTML = Object.entries(stage.metrics || {}).map(([key, val]) => {
+                    return `<span class="text-xs text-dim" style="margin-right:12px;">${key}: <strong class="text-accent">${val}</strong></span>`;
+                }).join('');
+
+                if (sIdx > 0) {
+                    stagesHTML += `
+                        <div style="text-align:center; padding:4px 0;">
+                            <span class="funnel-arrow">&#11015;</span>
+                        </div>
+                    `;
+                }
+
+                stagesHTML += `
+                    <div class="funnel-stage">
+                        <div class="funnel-icon ${stage.type}">${sIcon.icon}</div>
+                        <div class="funnel-info" style="flex:1;">
+                            <h4>${stage.name}</h4>
+                            <p>${sIcon.label} Stage</p>
+                            <div style="margin-top:8px;">${taskList}</div>
+                            <div style="margin-top:8px;">${metricsHTML}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="mc-card mb-2">
+                    <div class="mc-card-header">
+                        <div>
+                            <h3 style="display:inline;">${funnel.name}</h3>
+                            <span class="badge badge-${meta.color === 'info' ? 'published' : meta.color === 'purple' ? 'sax-tip' : meta.color === 'warning' ? 'draft' : 'ready'}" style="margin-left:8px;">${meta.label}</span>
+                        </div>
+                        <span class="text-xs text-dim">${funnel.status || 'planning'}</span>
+                    </div>
+                    <div class="mc-card-body">
+                        <p class="text-sm text-dim mb-2">${funnel.description || ''}</p>
+
+                        <!-- Funnel Stages -->
+                        <div class="mb-2">
+                            ${stagesHTML}
+                        </div>
+
+                        <!-- Linked Product -->
+                        <div class="grid-2" style="margin-top:16px;">
+                            <div class="product-card">
+                                <div class="flex-between mb-1">
+                                    <div class="price">${product.price || 'TBD'}</div>
+                                    <span class="badge ${tier.class}">${tier.label}</span>
+                                </div>
+                                <h4>${product.name || 'No product linked'}</h4>
+                            </div>
+
+                            <!-- Revenue Progress -->
+                            <div style="display:flex; flex-direction:column; justify-content:center;">
+                                <div class="flex-between mb-1">
+                                    <span class="text-xs text-dim">Revenue Goal</span>
+                                    <span class="text-xs text-accent">$${(funnel.revenueActual || 0).toLocaleString()} / $${(funnel.revenueGoal || 0).toLocaleString()}</span>
+                                </div>
+                                <div class="progress" style="height:8px;">
+                                    <div class="progress-bar" style="width:${pct}%;${pct >= 100 ? ' background:var(--success);' : ''}"></div>
+                                </div>
+                                <div class="text-xs text-dim mt-1">${pct}% of goal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ---- Toggle Stage Task Checkbox ----
+        window.toggleStageTask = function(funnelId, stageIdx, taskIdx, el) {
+            const funnel = mcStore.getById('funnels', funnelId);
+            if (!funnel) return;
+
+            if (!funnel.stages[stageIdx]._completed) {
+                funnel.stages[stageIdx]._completed = {};
+            }
+
+            const isChecked = !!funnel.stages[stageIdx]._completed[taskIdx];
+            funnel.stages[stageIdx]._completed[taskIdx] = !isChecked;
+
+            mcStore.update('funnels', funnelId, { stages: funnel.stages });
+
+            el.classList.toggle('checked');
+        };
+
+        // ---- Render Product Catalog ----
+        function renderProducts() {
+            const products = mcStore.getAll('products');
+            document.getElementById('product-count').textContent = `${products.length} products`;
+
+            document.getElementById('products-grid').innerHTML = products.map(p => {
+                const tier = TIER_BADGES[p.tier] || TIER_BADGES['mid'];
+                const priceLabel = p.priceMax ? `$${p.price} - $${p.priceMax.toLocaleString()}` : `$${p.price}`;
+                return `
+                    <div class="product-card">
+                        <div class="flex-between mb-1">
+                            <div class="price">${priceLabel}</div>
+                            <span class="badge ${tier.class}">${tier.label}</span>
+                        </div>
+                        <h4>${p.name}</h4>
+                        <p>${p.description || ''}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ---- Render Campaigns ----
+        function renderCampaigns() {
+            const campaigns = mcStore.getAll('campaigns');
+            const container = document.getElementById('campaigns-list');
+
+            if (campaigns.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">&#128640;</div>
+                        <h3>No Campaigns Yet</h3>
+                        <p>Create your first marketing campaign to coordinate content and funnels.</p>
+                        <button class="btn btn-primary" onclick="mcOpenModal('campaign')">+ Add Campaign</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = campaigns.map(c => {
+                const startFmt = mcFormatDate(c.startDate);
+                const endFmt = mcFormatDate(c.endDate);
+                const statusBadge = c.status === 'active' ? 'badge-ready' :
+                                    c.status === 'completed' ? 'badge-completed' :
+                                    c.status === 'paused' ? 'badge-draft' : 'badge-planned';
+                // Rough progress: based on date
+                let pct = 0;
+                if (c.startDate && c.endDate) {
+                    const now = Date.now();
+                    const start = new Date(c.startDate).getTime();
+                    const end = new Date(c.endDate).getTime();
+                    if (now >= end) pct = 100;
+                    else if (now > start) pct = Math.round(((now - start) / (end - start)) * 100);
+                }
+                if (c.status === 'completed') pct = 100;
+
+                return `
+                    <div class="list-item" style="flex-wrap:wrap;">
+                        <div class="list-item-info" style="min-width:200px;">
+                            <h4>${c.name}</h4>
+                            <p>${c.description || ''}</p>
+                            <div style="margin-top:6px;" class="flex gap-1 flex-wrap">
+                                <span class="badge ${statusBadge}">${c.status}</span>
+                                <span class="text-xs text-dim">${startFmt} &ndash; ${endFmt}</span>
+                            </div>
+                        </div>
+                        <div style="flex:1; min-width:200px;">
+                            <div class="flex-between mb-1">
+                                <span class="text-xs text-dim">Goal: ${c.goal || 'TBD'}</span>
+                                <span class="text-xs text-accent">${pct}%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:${pct}%;"></div>
+                            </div>
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editCampaign('${c.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCampaign('${c.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ---- Campaign CRUD ----
+        window.saveCampaign = function() {
+            const editId = document.getElementById('campaign-edit-id').value;
+            const data = {
+                name: document.getElementById('campaign-name').value.trim(),
+                description: document.getElementById('campaign-desc').value.trim(),
+                startDate: document.getElementById('campaign-start').value || null,
+                endDate: document.getElementById('campaign-end').value || null,
+                goal: document.getElementById('campaign-goal').value.trim(),
+                status: document.getElementById('campaign-status').value,
+                contentIds: []
+            };
+
+            if (!data.name) {
+                mcToast('Campaign name is required', 'error');
+                return;
+            }
+
+            if (editId) {
+                mcStore.update('campaigns', editId, data);
+                mcToast('Campaign updated', 'success');
+            } else {
+                mcStore.create('campaigns', data);
+                mcToast('Campaign created', 'success');
+            }
+
+            mcCloseModal('campaign');
+            clearCampaignForm();
+            renderAll();
+        };
+
+        window.editCampaign = function(id) {
+            const c = mcStore.getById('campaigns', id);
+            if (!c) return;
+
+            document.getElementById('campaign-modal-title').textContent = 'Edit Campaign';
+            document.getElementById('campaign-edit-id').value = id;
+            document.getElementById('campaign-name').value = c.name || '';
+            document.getElementById('campaign-desc').value = c.description || '';
+            document.getElementById('campaign-start').value = c.startDate || '';
+            document.getElementById('campaign-end').value = c.endDate || '';
+            document.getElementById('campaign-goal').value = c.goal || '';
+            document.getElementById('campaign-status').value = c.status || 'planning';
+            mcOpenModal('campaign');
+        };
+
+        window.deleteCampaign = function(id) {
+            if (!confirm('Delete this campaign?')) return;
+            mcStore.delete('campaigns', id);
+            mcToast('Campaign deleted', 'success');
+            renderAll();
+        };
+
+        function clearCampaignForm() {
+            document.getElementById('campaign-modal-title').textContent = 'Add Campaign';
+            document.getElementById('campaign-edit-id').value = '';
+            document.getElementById('campaign-name').value = '';
+            document.getElementById('campaign-desc').value = '';
+            document.getElementById('campaign-start').value = '';
+            document.getElementById('campaign-end').value = '';
+            document.getElementById('campaign-goal').value = '';
+            document.getElementById('campaign-status').value = 'planning';
+        }
+
+        // ---- Scroll to Section ----
+        window.scrollToSection = function(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        // ---- Render All ----
+        function renderAll() {
+            renderMetrics();
+            renderFunnelTabs();
+            renderProducts();
+            renderCampaigns();
+        }
+
+        // ---- Init ----
+        renderAll();
+
+        // Listen for data changes from other tabs
+        window.addEventListener('mc:data-changed', renderAll);
+    })();
+    </script>
+</body>
+</html>

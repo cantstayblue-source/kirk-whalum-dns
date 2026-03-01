@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministry | Kirk Whalum</title>
+    <meta name="description" content="Kirk Whalum's ministry work - Bible In Your Ear podcast, Visible Music College, ordained minister, and the Couragement Campaign.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <a href="website.html" class="nav-logo">Kirk Whalum</a>
+        <div class="nav-links">
+            <a href="about.html">About</a>
+            <a href="music.html">Music</a>
+            <a href="events.html">Events</a>
+            <a href="ministry.html" class="active">Ministry</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="contact.html" class="btn nav-cta">Book Kirk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="music.html">Music</a>
+        <a href="events.html">Events</a>
+        <a href="ministry.html">Ministry</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="section-label">Faith & Purpose</div>
+        <h1>Ministry</h1>
+        <p>Music is my ministry. Every note is a prayer.</p>
+    </div>
+
+    <!-- Ministry Intro -->
+    <section class="section section-dark">
+        <div class="about-grid">
+            <div class="about-content fade-in">
+                <h2>Where Music Meets Ministry</h2>
+                <p>For Kirk Whalum, music has always been more than entertainment. It's a calling. With a Masters of Art in Religion and ordination as a minister, Kirk bridges the worlds of jazz and faith in a way few artists can.</p>
+                <p>Whether he's leading worship at a church, teaching students at Visible Music College, or recording in the studio, the same spiritual intention flows through everything Kirk touches. His ministry isn't separate from his music — it IS his music.</p>
+                <p>Through the Couragement Campaign, Kirk is on a mission to inspire daily courage through faith, music, and community.</p>
+            </div>
+            <div class="about-image fade-in" style="font-size: 6rem;">&#10013;&#65039;</div>
+        </div>
+    </section>
+
+    <!-- Ministry Areas -->
+    <section class="section section-card">
+        <div class="section-header">
+            <div class="section-label">Areas of Ministry</div>
+            <h2>How Kirk Serves</h2>
+            <p>Faith expressed through music, teaching, and community</p>
+        </div>
+        <div class="ministry-grid">
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#128214;</div>
+                <h3>Bible In Your Ear (BIYE)</h3>
+                <p>A daily 15-minute podcast reading through the entire Bible in one year. Kirk's warm, engaging voice guides thousands of listeners through scripture each day, making the Word accessible and personal.</p>
+                <div style="margin-top: 20px;">
+                    <a href="#" class="btn btn-outline-gold" style="font-size: 0.85rem; padding: 10px 20px;">Listen to BIYE</a>
+                </div>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#127891;</div>
+                <h3>Visible Music College</h3>
+                <p>As a professor at Visible Music College in Memphis, Kirk invests in the next generation of musicians and ministers. He teaches not just technique, but the heart behind the music — 40 years of wisdom passed on.</p>
+                <div style="margin-top: 20px;">
+                    <a href="#" class="btn btn-outline-gold" style="font-size: 0.85rem; padding: 10px 20px;">Learn More</a>
+                </div>
+            </div>
+            <div class="ministry-card fade-in">
+                <div class="ministry-icon">&#10013;&#65039;</div>
+                <h3>Ordained Minister</h3>
+                <p>With a Masters of Art in Religion, Kirk brings theological depth to his music and life. He's available for worship leading, speaking engagements, and spiritual conferences that blend music with message.</p>
+                <div style="margin-top: 20px;">
+                    <a href="contact.html" class="btn btn-outline-gold" style="font-size: 0.85rem; padding: 10px 20px;">Book for Ministry</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Couragement Campaign -->
+    <section class="section section-dark">
+        <div class="section-header">
+            <div class="section-label">Campaign</div>
+            <h2>The Couragement Campaign</h2>
+            <p>Daily courage through faith, music, and community</p>
+        </div>
+        <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+            <div class="ministry-card fade-in" style="padding: 48px; border-color: rgba(201, 162, 39, 0.3);">
+                <div style="font-size: 3rem; margin-bottom: 20px;">&#128170;</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 16px;">What is Couragement?</h3>
+                <p style="font-size: 1rem; line-height: 1.8; color: var(--text-dim); margin-bottom: 24px;">Couragement is Kirk's word for the courage that comes from encouragement. It's a daily practice of lifting others up, finding strength in faith, and using music as a vehicle for transformation. The campaign brings together Kirk's audience through daily inspiration, exclusive content, and a shared mission to spread light.</p>
+                <a href="#join" class="btn btn-primary">Join the Couragement Campaign</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join CTA -->
+    <section class="email-section" id="join">
+        <h2>Join the Movement</h2>
+        <p>Get daily Couragement — inspiration, sax tips, scripture, and behind-the-scenes content from Kirk delivered to your inbox.</p>
+        <form class="email-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Welcome!'; setTimeout(() => this.querySelector('button').textContent='Join Free', 3000);">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Join Free</button>
+        </form>
+        <p class="email-note">&#127927; Join 2,000+ sax lovers and faith seekers</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">Kirk Whalum</div>
+                <p>Grammy-nominated saxophonist bringing soul, spirit, and jazz to audiences worldwide for over 40 years.</p>
+                <div class="social-links-footer">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-link-icon" aria-label="Instagram">&#128248;</a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-link-icon" aria-label="Facebook">&#128216;</a>
+                    <a href="https://youtube.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="YouTube">&#9654;&#65039;</a>
+                    <a href="https://tiktok.com/@kirkwhalum" target="_blank" class="social-link-icon" aria-label="TikTok">&#127925;</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="about.html">About Kirk</a>
+                <a href="music.html">Music</a>
+                <a href="events.html">Events</a>
+                <a href="ministry.html">Ministry</a>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <a href="contact.html">Book Kirk</a>
+                <a href="contact.html">Press Kit</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Listen</h4>
+                <a href="#">Spotify</a>
+                <a href="#">Apple Music</a>
+                <a href="#">YouTube Music</a>
+                <a href="#">Amazon Music</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Kirk Whalum. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>

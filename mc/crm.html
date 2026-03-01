@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/mc/">
+    <title>Cafe Kirk CRM | Kirk Whalum Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mc-styles.css">
+    <style>
+        /* Pipeline status bar */
+        .pipeline-bar {
+            display: flex;
+            gap: 2px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .pipeline-stage {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pipeline-stage:hover { background: var(--bg-card-hover); }
+        .pipeline-stage.active { background: var(--accent-dim); }
+        .pipeline-stage .stage-count {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+        .pipeline-stage .stage-label {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+        }
+        .pipeline-stage + .pipeline-stage::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: var(--border);
+        }
+        .pipeline-arrow {
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            padding: 0 2px;
+        }
+
+        /* Guest card avatar */
+        .guest-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), #8a6d15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: #000;
+        }
+
+        /* Category column accents */
+        .kanban-column[data-category="warm"] .kanban-column-header { border-bottom: 2px solid var(--warning); }
+        .kanban-column[data-category="reach"] .kanban-column-header { border-bottom: 2px solid var(--purple); }
+        .kanban-column[data-category="local"] .kanban-column-header { border-bottom: 2px solid var(--info); }
+    </style>
+</head>
+<body>
+
+<button class="mc-mobile-toggle" aria-label="Toggle menu">&#9776;</button>
+<div class="mc-layout">
+    <aside class="mc-sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">&#127927;</div>
+            <div class="sidebar-brand">
+                <h1>Kirk Whalum</h1>
+                <span>Mission Control</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><span class="icon">&#128202;</span><span class="label">Dashboard</span></a>
+            <a href="content.html" class="sidebar-link"><span class="icon">&#128249;</span><span class="label">Content</span></a>
+            <a href="shows.html" class="sidebar-link"><span class="icon">&#127908;</span><span class="label">Shows</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Business</div>
+            <a href="funnels.html" class="sidebar-link"><span class="icon">&#127919;</span><span class="label">Funnels</span></a>
+            <a href="crm.html" class="sidebar-link active"><span class="icon">&#128101;</span><span class="label">CRM</span></a>
+            <a href="tasks.html" class="sidebar-link"><span class="icon">&#9889;</span><span class="label">Tasks</span></a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">System</div>
+            <a href="settings.html" class="sidebar-link"><span class="icon">&#9881;</span><span class="label">Settings</span></a>
+            <a href="api-docs.html" class="sidebar-link"><span class="icon">&#128218;</span><span class="label">API Docs</span></a>
+            <div class="sidebar-divider"></div>
+            <a href="../website.html" class="sidebar-link"><span class="icon">&#127760;</span><span class="label">Public Site</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="ai-badge"><span class="dot"></span> <span>Valarnette Active</span></div>
+            <button class="theme-toggle" id="theme-toggle-btn" onclick="mcToggleTheme()">
+                <span class="toggle-icon">&#9728;&#65039;</span> Light Mode
+            </button>
+        </div>
+    </aside>
+    <div class="mc-sidebar-overlay"></div>
+
+    <main class="mc-main">
+        <!-- Header -->
+        <div class="mc-header">
+            <div>
+                <h2>Cafe Kirk CRM</h2>
+                <p>Guest pipeline and relationship management</p>
+            </div>
+            <div class="mc-header-actions">
+                <button class="btn btn-primary" onclick="mcOpenModal('add-guest')">+ Add Guest</button>
+            </div>
+        </div>
+
+        <div class="mc-body">
+            <!-- Status Pipeline Bar -->
+            <div class="pipeline-bar" id="pipeline-bar"></div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar" id="filter-bar">
+                <button class="filter-btn active" data-status="all">All Statuses</button>
+                <button class="filter-btn" data-status="identified">Identified</button>
+                <button class="filter-btn" data-status="reached-out">Reached Out</button>
+                <button class="filter-btn" data-status="in-talks">In Talks</button>
+                <button class="filter-btn" data-status="confirmed">Confirmed</button>
+                <button class="filter-btn" data-status="appeared">Appeared</button>
+                <button class="filter-btn" data-status="follow-up">Follow-Up</button>
+            </div>
+
+            <!-- Kanban Board -->
+            <div class="kanban" id="kanban-board"></div>
+        </div>
+    </main>
+</div>
+
+<!-- Guest Detail Modal -->
+<div class="mc-modal-overlay" id="modal-guest-detail">
+    <div class="mc-modal">
+        <div class="mc-modal-header">
+            <h3 id="guest-detail-title">Guest Details</h3>
+            <button class="mc-modal-close" onclick="mcCloseModal('guest-detail')">&times;</button>
+        </div>
+        <div class="mc-modal-body">
+            <input type="hidden" id="detail-guest-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="detail-guest-name">
+                </div>
+                <div class="form-group">
+                    <label>Genre</label>
+                    <input type="text" class="form-control" id="detail-guest-genre">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" id="detail-guest-category">
+                        <option value="warm">Warm Lead</option>
+                        <option value="reach">Reach Lead</option>
+                        <option value="local">Local Legend</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" id="detail-guest-status">
+                        <option value="identified">Identified</option>
+                        <option value="reached-out">Reached Out</option>
+                        <option value="in-talks">In Talks</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="appeared">Appeared</option>
+                        <option value="follow-up">Follow-Up</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Social Links</label>
+                <input type="text" class="form-control" id="detail-guest-social" placeholder="Instagram, Twitter, etc.">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Last Contacted</label>
+                    <input type="date" class="form-control" id="detail-guest-contacted">
+                </div>
+                <div class="form-group">
+                    <label>Cafe Kirk Date</label>
+                    <input type="date" class="form-control" id="detail-guest-ckdate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control" id="detail-guest-notes" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="mc-modal-footer">
+            <button class="btn btn-danger btn-sm" onclick="deleteGuest()">Delete</button>
+            <div style="flex:1"></div>
+            <button class="btn btn-outline" onclick="mcCloseModal('guest-detail')">Cancel</button>
+            <button class="btn btn-primary" onclick="saveGuest()">Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Guest Modal -->
+<div class="mc-modal-overlay" id="modal-add-guest">
+    <div class="mc-modal">
+        <div class="mc-modal-header">
+            <h3>Add New Guest</h3>
+            <button class="mc-modal-close" onclick="mcCloseModal('add-guest')">&times;</button>
+        </div>
+        <div class="mc-modal-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" id="new-guest-name" placeholder="e.g. Snarky Puppy">
+                </div>
+                <div class="form-group">
+                    <label>Genre</label>
+                    <input type="text" class="form-control" id="new-guest-genre" placeholder="e.g. Jazz / Funk">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" id="new-guest-category">
+                        <option value="warm">Warm Lead</option>
+                        <option value="reach">Reach Lead</option>
+                        <option value="local">Local Legend</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select class="form-control" id="new-guest-status">
+                        <option value="identified" selected>Identified</option>
+                        <option value="reached-out">Reached Out</option>
+                        <option value="in-talks">In Talks</option>
+                        <option value="confirmed">Confirmed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control" id="new-guest-notes" placeholder="Connection notes, social handles, etc."></textarea>
+            </div>
+        </div>
+        <div class="mc-modal-footer">
+            <button class="btn btn-outline" onclick="mcCloseModal('add-guest')">Cancel</button>
+            <button class="btn btn-primary" onclick="addGuest()">Add Guest</button>
+        </div>
+    </div>
+</div>
+
+<script src="mc-data.js"></script>
+<script src="mc-api.js"></script>
+<script src="mc-app.js"></script>
+<script>
+(function() {
+    'use strict';
+
+    const STATUS_ORDER = ['identified', 'reached-out', 'in-talks', 'confirmed', 'appeared', 'follow-up'];
+    const STATUS_LABELS = {
+        'identified': 'Identified',
+        'reached-out': 'Reached Out',
+        'in-talks': 'In Talks',
+        'confirmed': 'Confirmed',
+        'appeared': 'Appeared',
+        'follow-up': 'Follow-Up'
+    };
+    const CATEGORY_LABELS = {
+        'warm': 'Warm Leads',
+        'reach': 'Reach Leads',
+        'local': 'Local Legends'
+    };
+    const CATEGORY_ICONS = {
+        'warm': '&#128293;',
+        'reach': '&#127775;',
+        'local': '&#127963;'
+    };
+
+    let currentStatusFilter = 'all';
+
+    // ── Get Initials ──
+    function getInitials(name) {
+        if (!name) return '?';
+        return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // ── Escape HTML ──
+    function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    // ── Render Pipeline Bar ──
+    function renderPipelineBar() {
+        const guests = mcStore.getAll('guests');
+        const counts = {};
+        STATUS_ORDER.forEach(s => counts[s] = 0);
+        guests.forEach(g => {
+            if (counts[g.status] !== undefined) counts[g.status]++;
+            else counts[g.status] = (counts[g.status] || 0) + 1;
+        });
+
+        document.getElementById('pipeline-bar').innerHTML = STATUS_ORDER.map((status, i) => {
+            const isActive = currentStatusFilter === status;
+            return `
+                ${i > 0 ? '<div class="pipeline-arrow">&rarr;</div>' : ''}
+                <div class="pipeline-stage ${isActive ? 'active' : ''}" onclick="filterByPipeline('${status}')">
+                    <div class="stage-count">${counts[status] || 0}</div>
+                    <div class="stage-label">${STATUS_LABELS[status]}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ── Filter by Pipeline Stage ──
+    window.filterByPipeline = function(status) {
+        if (currentStatusFilter === status) {
+            currentStatusFilter = 'all';
+        } else {
+            currentStatusFilter = status;
+        }
+        // Sync filter buttons
+        document.querySelectorAll('#filter-bar .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.status === currentStatusFilter);
+        });
+        renderPipelineBar();
+        renderKanban();
+    };
+
+    // ── Render Kanban ──
+    function renderKanban() {
+        let guests = mcStore.getAll('guests');
+
+        // Apply status filter
+        if (currentStatusFilter !== 'all') {
+            guests = guests.filter(g => g.status === currentStatusFilter);
+        }
+
+        const categories = ['warm', 'reach', 'local'];
+        const board = document.getElementById('kanban-board');
+
+        board.innerHTML = categories.map(cat => {
+            const catGuests = guests.filter(g => g.category === cat);
+
+            return `
+                <div class="kanban-column" data-category="${cat}">
+                    <div class="kanban-column-header">
+                        <span>${CATEGORY_ICONS[cat]} ${CATEGORY_LABELS[cat]}</span>
+                        <span class="count">${catGuests.length}</span>
+                    </div>
+                    <div class="kanban-column-body">
+                        ${catGuests.length === 0 ? `
+                            <div class="empty-state" style="padding:20px 10px;">
+                                <p class="text-xs text-dim">No guests match current filter</p>
+                            </div>
+                        ` : catGuests.map(guest => renderGuestCard(guest)).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ── Render Guest Card ──
+    function renderGuestCard(guest) {
+        const initials = getInitials(guest.name);
+        const notesPreview = guest.notes ? (guest.notes.length > 60 ? guest.notes.slice(0, 60) + '...' : guest.notes) : '';
+
+        return `
+            <div class="kanban-card" onclick="openGuestDetail('${guest.id}')">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <div class="guest-avatar">${initials}</div>
+                    <div style="flex:1;min-width:0;">
+                        <h4 style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(guest.name)}</h4>
+                        <p style="font-size:0.65rem;color:var(--text-dim);">${escapeHtml(guest.genre)}</p>
+                    </div>
+                </div>
+                ${notesPreview ? `<p style="font-size:0.65rem;color:var(--text-muted);margin-bottom:8px;">${escapeHtml(notesPreview)}</p>` : ''}
+                <div class="badges">
+                    <span class="badge badge-${guest.status}">${STATUS_LABELS[guest.status] || guest.status}</span>
+                    <span class="badge badge-${guest.category}">${guest.category}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    // ── Open Guest Detail ──
+    window.openGuestDetail = function(guestId) {
+        const guest = mcStore.getById('guests', guestId);
+        if (!guest) return;
+
+        document.getElementById('detail-guest-id').value = guest.id;
+        document.getElementById('detail-guest-name').value = guest.name || '';
+        document.getElementById('detail-guest-genre').value = guest.genre || '';
+        document.getElementById('detail-guest-category').value = guest.category || 'warm';
+        document.getElementById('detail-guest-status').value = guest.status || 'identified';
+        document.getElementById('detail-guest-social').value = guest.socialLinks || '';
+        document.getElementById('detail-guest-contacted').value = guest.lastContacted || '';
+        document.getElementById('detail-guest-ckdate').value = guest.cafeKirkDate || '';
+        document.getElementById('detail-guest-notes').value = guest.notes || '';
+        document.getElementById('guest-detail-title').textContent = guest.name;
+
+        mcOpenModal('guest-detail');
+    };
+
+    // ── Save Guest (edit) ──
+    window.saveGuest = function() {
+        const id = document.getElementById('detail-guest-id').value;
+        const name = document.getElementById('detail-guest-name').value.trim();
+        const genre = document.getElementById('detail-guest-genre').value.trim();
+        const category = document.getElementById('detail-guest-category').value;
+        const status = document.getElementById('detail-guest-status').value;
+        const socialLinks = document.getElementById('detail-guest-social').value.trim();
+        const lastContacted = document.getElementById('detail-guest-contacted').value || null;
+        const cafeKirkDate = document.getElementById('detail-guest-ckdate').value || null;
+        const notes = document.getElementById('detail-guest-notes').value.trim();
+
+        if (!name) {
+            mcToast('Guest name is required.', 'error');
+            return;
+        }
+
+        mcStore.update('guests', id, {
+            name, genre, category, status, socialLinks,
+            lastContacted, cafeKirkDate, notes
+        });
+
+        mcStore.logActivity('guest-updated', `Updated guest: ${name} (${status})`);
+        mcToast(`Guest updated: ${name}`, 'success');
+        mcCloseModal('guest-detail');
+        renderPipelineBar();
+        renderKanban();
+    };
+
+    // ── Delete Guest ──
+    window.deleteGuest = function() {
+        const id = document.getElementById('detail-guest-id').value;
+        const guest = mcStore.getById('guests', id);
+        if (!guest) return;
+        if (!confirm(`Remove ${guest.name} from the CRM? This cannot be undone.`)) return;
+
+        mcStore.delete('guests', id);
+        mcStore.logActivity('guest-deleted', `Removed guest: ${guest.name}`);
+        mcToast(`Guest removed: ${guest.name}`, 'success');
+        mcCloseModal('guest-detail');
+        renderPipelineBar();
+        renderKanban();
+    };
+
+    // ── Add Guest ──
+    window.addGuest = function() {
+        const name = document.getElementById('new-guest-name').value.trim();
+        const genre = document.getElementById('new-guest-genre').value.trim();
+        const category = document.getElementById('new-guest-category').value;
+        const status = document.getElementById('new-guest-status').value;
+        const notes = document.getElementById('new-guest-notes').value.trim();
+
+        if (!name) {
+            mcToast('Please enter a guest name.', 'error');
+            return;
+        }
+
+        mcStore.create('guests', {
+            name, genre, category, status,
+            socialLinks: '',
+            notes,
+            lastContacted: null,
+            cafeKirkDate: null
+        });
+
+        mcStore.logActivity('guest-added', `Added guest: ${name}`);
+        mcToast(`Guest added: ${name}`, 'success');
+        mcCloseModal('add-guest');
+
+        // Reset form
+        document.getElementById('new-guest-name').value = '';
+        document.getElementById('new-guest-genre').value = '';
+        document.getElementById('new-guest-category').value = 'warm';
+        document.getElementById('new-guest-status').value = 'identified';
+        document.getElementById('new-guest-notes').value = '';
+
+        renderPipelineBar();
+        renderKanban();
+    };
+
+    // ── Filter Bar Click Handlers ──
+    document.querySelectorAll('#filter-bar .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentStatusFilter = this.dataset.status;
+            renderPipelineBar();
+            renderKanban();
+        });
+    });
+
+    // ── Init ──
+    renderPipelineBar();
+    renderKanban();
+
+})();
+</script>
+
+</body>
+</html>
