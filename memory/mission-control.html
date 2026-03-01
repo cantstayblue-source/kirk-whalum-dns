@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Control | Kirk Whalum DNS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --accent: #c9a227;
+            --accent-dim: #8a7019;
+            --text: #e5e5e5;
+            --text-dim: #888;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --instagram: #e1306c;
+            --facebook: #1877f2;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .logo span {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            background: var(--accent-dim);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .card h3 {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        
+        .big-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .big-number span {
+            font-size: 1rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .social-btn.instagram {
+            background: var(--instagram);
+            color: white;
+        }
+        
+        .social-btn.facebook {
+            background: var(--facebook);
+            color: white;
+        }
+        
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .system-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #2a2a2a;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .system-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+        
+        .system-card.ezra::before { background: var(--success); }
+        .system-card.content::before { background: var(--accent); }
+        .system-card.bridge::before { background: #8b5cf6; }
+        .system-card.crm::before { background: #06b6d4; }
+        
+        .system-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .system-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .system-desc {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+        
+        .status.setup {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .status.planned {
+            background: rgba(136, 136, 136, 0.2);
+            color: var(--text-dim);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .action-items {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .action-items h3 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-items h3::before {
+            content: '⚡';
+        }
+        
+        .todo-list {
+            list-style: none;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .todo-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-dim);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .todo-content h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        
+        .todo-content p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        
+        .todo-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+        
+        .tag-urgent { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .tag-soon { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .tag-later { background: rgba(136, 136, 136, 0.2); color: var(--text-dim); }
+        
+        .quick-actions {
+            margin-top: 30px;
+        }
+        
+        .quick-actions h3 {
+            margin-bottom: 16px;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+            .system-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>🎷 Mission Control</h1>
+                <span>Kirk Whalum DNS Dashboard</span>
+            </div>
+            <div class="status-badge">🟢 System Online</div>
+        </header>
+
+        <!-- Quick Stats -->
+        <div class="grid">
+            <div class="card">
+                <h3>Social Reach</h3>
+                <div class="big-number">338K <span>followers</span></div>
+                <div class="social-links">
+                    <a href="https://instagram.com/kirkwhalum" target="_blank" class="social-btn instagram">
+                        📸 @kirkwhalum (92K)
+                    </a>
+                    <a href="https://facebook.com/KirkWhalum" target="_blank" class="social-btn facebook">
+                        📘 KirkWhalum (246K)
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Upcoming Shows</h3>
+                <div class="big-number">-- <span>this month</span></div>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Connect calendar to track</p>
+            </div>
+            <div class="card">
+                <h3>Email List</h3>
+                <div class="big-number">0 <span>subscribers</span></div>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Set up ConvertKit/MailerLite</p>
+            </div>
+        </div>
+
+        <!-- DNS Systems -->
+        <div class="system-grid">
+            <div class="system-card ezra">
+                <div class="system-header">
+                    <div class="system-title">1. The Ezra Effect</div>
+                    <span class="status setup"><span class="status-dot"></span> Setup Needed</span>
+                </div>
+                <p class="system-desc">Automated 3-day post-show follow-ups to promoters & agents. Maintains relationships without manual tracking.</p>
+                <p><strong>Next:</strong> Connect Google Calendar to enable triggers</p>
+            </div>
+            
+            <div class="system-card content">
+                <div class="system-header">
+                    <div class="system-title">2. Reboot Content Factory</div>
+                    <span class="status setup"><span class="status-dot"></span> Setup Needed</span>
+                </div>
+                <p class="system-desc">30-day "Couragement" campaign repurpose your "Reboot" manuscript into social posts.</p>
+                <p><strong>Need:</strong> Access to Reboot manuscript + Dropbox photos</p>
+            </div>
+            
+            <div class="system-card bridge">
+                <div class="system-header">
+                    <div class="system-title">3. Global Bridge</div>
+                    <span class="status planned"><span class="status-dot"></span> Planned</span>
+                </div>
+                <p class="system-desc">Afrobeat collaborations to reach 15-25 age demographic. Research & outreach to 10 key artists.</p>
+                <p><strong>Target:</strong> Wizkid, Burna Boy, Rema, Fireboy DML</p>
+            </div>
+            
+            <div class="system-card crm">
+                <div class="system-header">
+                    <div class="system-title">4. Logjam Breaker (CRM)</div>
+                    <span class="status setup"><span class="status-dot"></span> Setup Needed</span>
+                </div>
+                <p class="system-desc">Guest pipeline for Cafe Kirk. Track Warm/Reach/Local leads, last contact, and "The Ask".</p>
+                <p><strong>Next:</strong> Build Airtable base + enter contacts</p>
+            </div>
+        </div>
+
+        <!-- Action Items -->
+        <div class="action-items" style="margin-top: 30px;">
+            <h3>Your Action Items</h3>
+            <ul class="todo-list">
+                <li class="todo-item">
+                    <div class="todo-checkbox"></div>
+                    <div class="todo-content">
+                        <h4>Connect Google Calendar <span class="todo-tag tag-urgent">URGENT</span></h4>
+                        <p>Grant calendar access so I can detect shows and trigger Ezra Effect follow-ups</p>
+                    </div>
+                </li>
+                <li class="todo-item">
+                    <div class="todo-checkbox"></div>
+                    <div class="todo-content">
+                        <h4>Share Reboot Manuscript <span class="todo-tag tag-urgent">URGENT</span></h4>
+                        <p>Upload to Dropbox or share link so I can extract content gems</p>
+                    </div>
+                </li>
+                <li class="todo-item">
+                    <div class="todo-checkbox"></div>
+                    <div class="todo-content">
+                        <h4>Set up email marketing <span class="todo-tag tag-soon">THIS WEEK</span></h4>
+                        <p>Create ConvertKit or MailerLite account for webinar funnels</p>
+                    </div>
+                </li>
+                <li class="todo-item">
+                    <div class="todo-checkbox"></div>
+                    <div class="todo-content">
+                        <h4>Cafe Kirk Guest List</h4>
+                        <p>Provide initial contacts: PJ Morton, Michael McDonald, local Memphis artists</p>
+                    </div>
+                </li>
+                <li class="todo-item">
+                    <div class="todo-checkbox"></div>
+                    <div class="todo-content">
+                        <h4>Approve boot camp idea <span class="todo-tag tag-later">LATER</span></h4>
+                        <p>Review 3 high-ticket offer concepts: Sax Masterclass, Spiritual Rhythms, Artist Reboot</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-btns">
+                <a href="https://calendar.google.com/calendar" target="_blank" class="action-btn">📅 View Schedule</a>
+                <a href="mailto:kirkwhalum@gmail.com" class="action-btn">📧 Email Kirk</a>
+                <a href="https://kirkwhalum.com" target="_blank" class="action-btn">🌐 Main Website</a>
+                <a href="https://instagram.com/kirkwhalum" target="_blank" class="action-btn">📸 Instagram</a>
+                <a href="https://facebook.com/KirkWhalum" target="_blank" class="action-btn">📘 Facebook</a>
+                <a href="#" onclick="location.reload(); return false;" class="action-btn">🔄 Refresh</a>
+            </div>
+            <p style="margin-top: 16px; color: var(--text-dim); font-size: 0.85rem;">💡 To message Valarnette directly, open your Telegram or webchat connected to OpenClaw</p>
+        </div>
+
+        <footer>
+            <p>🎷 Kirk Whalum Digital Nervous System | Powered by Valarnette</p>
+            <p style="margin-top: 8px;">Last updated: March 1, 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

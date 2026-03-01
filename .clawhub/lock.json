@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "skills": {
+    "calendar": {
+      "version": "1.0.0",
+      "installedAt": 1772335085874
+    },
+    "apple-calendar-cli": {
+      "version": "1.0.1",
+      "installedAt": 1772335110604
+    }
+  }
+}
